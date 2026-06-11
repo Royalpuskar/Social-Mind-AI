@@ -1115,5 +1115,93 @@ renderHistory();
 
 </body>
 </html>
+ <!-- 🔗 LINK SAFETY CHECK -->
+<div style="max-width:900px;margin:40px auto;padding:20px;background:#1c2235;border:1px solid rgba(99,120,255,0.15);border-radius:12px;">
+  <h3 style="color:#e8ecff;margin-bottom:10px;">🔗 Quick Link Safety Check</h3>
+  <p style="color:#8892b0;font-size:14px;">Paste a URL to detect suspicious patterns (phishing risk indicators)</p>
 
+  <input id="urlCheck" placeholder="https://example.com" 
+    style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #2a3350;background:#161b2a;color:white;">
+
+  <button onclick="checkLink()" 
+    style="margin-top:10px;padding:10px 20px;background:linear-gradient(135deg,#6378ff,#4f63ff);color:white;border:none;border-radius:8px;cursor:pointer;">
+    Check Link
+  </button>
+
+  <div id="linkResult" style="margin-top:15px;color:#8892b0;"></div>
+</div>
+
+<script>
+function checkLink(){
+  let url = document.getElementById("urlCheck").value;
+  let result = document.getElementById("linkResult");
+
+  if(!url){
+    result.innerHTML = "⚠️ Please enter a URL";
+    return;
+  }
+
+  let score = 100;
+  let reasons = [];
+
+  if(url.includes("login") || url.includes("verify")) {
+    score -= 30;
+    reasons.push("Login/verify keyword detected");
+  }
+  if(url.includes("bit.ly") || url.includes("tinyurl")) {
+    score -= 20;
+    reasons.push("Shortened URL hides real domain");
+  }
+  if(url.split(".").length > 3) {
+    score -= 15;
+    reasons.push("Unusual domain structure");
+  }
+
+  let level = score > 70 ? "SAFE" : score > 40 ? "WARNING" : "DANGER";
+
+  result.innerHTML = `
+    <b>Risk Level:</b> ${level}<br>
+    <b>Score:</b> ${score}/100<br>
+    <b>Notes:</b> ${reasons.join(", ") || "No major risks detected"}
+  `;
+}
+</script>
+
+
+<!-- 📊 HISTORY SYSTEM -->
+<div style="max-width:900px;margin:20px auto;padding:20px;background:#1c2235;border-radius:12px;border:1px solid rgba(99,120,255,0.15);">
+  <h3 style="color:#e8ecff;">📊 Recent Analysis History</h3>
+  <div id="historyBox" style="color:#8892b0;font-size:14px;margin-top:10px;"></div>
+</div>
+
+<script>
+function saveHistory(text, risk){
+  let history = JSON.parse(localStorage.getItem("sm_history") || "[]");
+  history.unshift({text, risk});
+  history = history.slice(0,5);
+  localStorage.setItem("sm_history", JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory(){
+  let history = JSON.parse(localStorage.getItem("sm_history") || "[]");
+  document.getElementById("historyBox").innerHTML =
+    history.length
+      ? history.map(h => `• ${h.risk} — ${h.text.slice(0,40)}...`).join("<br>")
+      : "No history yet.";
+}
+
+renderHistory();
+</script>
+
+
+<!-- 🧠 WHY RISK EXPLANATION BOOSTER -->
+<div style="max-width:900px;margin:20px auto;padding:20px;background:#161b2a;border-radius:12px;border:1px solid rgba(99,120,255,0.15);color:#8892b0;">
+  <h3 style="color:#e8ecff;">🧠 Why this message may be risky</h3>
+  <ul>
+    <li>Urgency language detected</li>
+    <li>Request for sensitive information</li>
+    <li>Suspicious or unknown source patterns</li>
+  </ul>
+</div>
 
