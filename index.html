@@ -1599,3 +1599,20 @@ function runDemo(){
   }, 500);
 }
 </script>
+
+
+
+<script>
+function runDemo(){
+  const input = document.getElementById("userInput");
+  if(!input) return;
+
+  input.value = "URGENT: Your bank account has been locked. Click this link immediately to verify.";
+
+  document.getElementById("tool").scrollIntoView({behavior:"smooth"});
+
+  setTimeout(() => {
+    if(typeof analyze === "function") analyze();
+  }, 600);
+}
+</script>
