@@ -466,6 +466,7 @@
     margin-top: 1.5rem;
     border-collapse: collapse;
     font-size: 0.9rem;
+    overflow-x: auto;
   }
 
   .comparison-table th,
@@ -736,13 +737,13 @@
     <div class="sample-buttons">
       <button class="sample-btn" onclick="loadSample('💰 Lottery scam: You have won a lottery! Click here to claim your $10,000 prize now!')">💰 Lottery</button>
       <button class="sample-btn" onclick="loadSample('🎣 Phishing email: Verify your account information here to secure access.')">🎣 Phishing</button>
-      <button class="sample-btn" onclick="loadSample('📰 Fake news: Scientists reveal secret cure Big Pharma doesn\'t want you to know!')">📰 Fake news</button>
-      <button class="sample-btn" onclick="loadSample('😈 Manipulation: Everyone is buying now, don\'t be left behind! Act fast!')">😈 Manipulation</button>
+      <button class="sample-btn" onclick="loadSample('📰 Fake news: Scientists reveal secret cure Big Pharma does not want you to know!')">📰 Fake news</button>
+      <button class="sample-btn" onclick="loadSample('😈 Manipulation: Everyone is buying now, do not be left behind! Act fast!')">😈 Manipulation</button>
       <button class="sample-btn" onclick="loadSample('✅ Safe: Hi, hope we can catch up soon!')">✅ Safe</button>
       <button class="sample-btn" onclick="loadSample('⚡ Urgency: Account deleted in 24 hours unless verified now!')">⚡ Urgency</button>
     </div>
 
-    <input type="password" id="apiKey" placeholder="Paste your Anthropic API key (sk-ant-...) [Optional for demo]">
+    <input type="text" id="apiKey" placeholder="Paste your Anthropic API key (sk-ant-...) [Optional for demo]">
 
     <div class="analyze-footer">
       <button class="btn-primary" onclick="analyze()">🧠 Analyze Now</button>
@@ -1131,7 +1132,6 @@ function getMockAnalysis(text) {
   riskScore = Math.min(riskScore + Math.random() * 20, 100);
 
   let riskLevel = riskScore > 70 ? "DANGER" : riskScore > 40 ? "WARNING" : "SAFE";
-  let color = riskLevel === "DANGER" ? "#ff4757" : riskLevel === "WARNING" ? "#ffd166" : "#3de8b0";
 
   return {
     riskLevel,
@@ -1148,10 +1148,10 @@ function getMockAnalysis(text) {
       ? `Detected ${threats.join(", ")} patterns.`
       : "No significant threats detected.",
     actions: [
-      "**Do not click** any links in this message",
-      "**Do not share** personal or financial information",
-      "**Verify** requests through official channels",
-      hasBankTerms ? "**Contact** your bank directly using official numbers" : "**Report** to platform moderators if suspicious"
+      "Do not click any links in this message",
+      "Do not share personal or financial information",
+      "Verify requests through official channels",
+      hasBankTerms ? "Contact your bank directly using official numbers" : "Report to platform moderators if suspicious"
     ],
     suggestedReply: hasBankTerms 
       ? "I will contact my bank directly using the number on their website to verify this."
@@ -1166,7 +1166,7 @@ async function analyze(inputText = null) {
   const text = inputText || document.getElementById("userInput").value.trim();
   
   if (!text) {
-    alert("⚠️ Please enter a message to analyze");
+    alert("Please enter a message to analyze");
     return;
   }
 
