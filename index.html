@@ -1205,3 +1205,69 @@ renderHistory();
   </ul>
 </div>
 
+
+
+
+
+
+
+<!-- 🧠 SMART REPLY + EXPLANATION BOOSTER -->
+<div style="max-width:900px;margin:40px auto;padding:20px;background:#1c2235;border:1px solid rgba(99,120,255,0.15);border-radius:12px;">
+  
+  <h3 style="color:#e8ecff;margin-bottom:10px;">🧠 AI Safety Response System</h3>
+  <p style="color:#8892b0;font-size:14px;">
+    Generate a safe reply + understand why a message might be dangerous
+  </p>
+
+  <textarea id="smartInput" placeholder="Paste a suspicious message here..."
+    style="width:100%;min-height:100px;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #2a3350;background:#161b2a;color:white;"></textarea>
+
+  <button onclick="generateSmartReply()"
+    style="margin-top:10px;padding:10px 20px;background:linear-gradient(135deg,#6378ff,#4f63ff);color:white;border:none;border-radius:8px;cursor:pointer;">
+    Analyze & Generate Safe Reply
+  </button>
+
+  <div id="smartOutput" style="margin-top:15px;color:#8892b0;"></div>
+</div>
+
+<script>
+function generateSmartReply(){
+  let text = document.getElementById("smartInput").value;
+  let out = document.getElementById("smartOutput");
+
+  if(!text){
+    out.innerHTML = "⚠️ Please paste a message first";
+    return;
+  }
+
+  // Simple AI-like logic (no API needed for fallback demo)
+  let reply = "";
+  let reasons = [];
+
+  if(text.toLowerCase().includes("urgent") || text.toLowerCase().includes("now")){
+    reasons.push("Uses urgency pressure tactics");
+  }
+  if(text.toLowerCase().includes("password") || text.toLowerCase().includes("bank")){
+    reasons.push("Requests sensitive information");
+  }
+  if(text.toLowerCase().includes("click") || text.toLowerCase().includes("link")){
+    reasons.push("Encourages suspicious link interaction");
+  }
+
+  if(reasons.length > 0){
+    reply = "Thank you for your message. I will verify this through official channels before taking any action.";
+  } else {
+    reply = "Thanks for the message. I will review and respond shortly.";
+  }
+
+  out.innerHTML = `
+    <b style="color:#3de8b0;">💬 Suggested Safe Reply:</b><br>
+    ${reply}
+    <br><br>
+
+    <b style="color:#ffd166;">🧠 Why this may be risky:</b><br>
+    ${reasons.length ? reasons.map(r => "• " + r).join("<br>") : "• No strong risk patterns detected"}
+  `;
+}
+</script>
+
