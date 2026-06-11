@@ -45,3 +45,32 @@ SocialMind AI is an intelligent reasoning agent designed to protect users from t
 |-----------|---------|
 | 📩 Message Overload | Average person gets 100+ messages daily |
 | 🎣 Phishing & Scams
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| 🎨 Frontend | HTML, CSS, JavaScript |
+| 🤖 AI Engine | Anthropic Claude API |
+| 🔥 Backend | Firebase |
+| 🧩 Architecture | Reasoning Agent |
+| ✍️ Methodology | Prompt Engineering |
+
+---
+
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| 🎨 Frontend | HTML, CSS, JavaScript |
+| 🤖 AI Engine | Anthropic Claude API |
+| 🔥 Backend | Firebase |
+| 🧩 Architecture | Reasoning Agent |
+| ✍️ Methodology | Prompt Engineering |
+
+---
+
