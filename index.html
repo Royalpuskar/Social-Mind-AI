@@ -1318,3 +1318,62 @@ function closeAlert(){
   document.getElementById("scamAlertBox").style.display = "none";
 }
 </script>
+
+
+
+
+
+
+<!-- 🏆 FINAL 10/10 DEMO MODE SYSTEM -->
+<div id="demoBanner"
+  style="position:fixed;bottom:20px;left:20px;z-index:9999;
+  background:#1c2235;border:1px solid rgba(99,120,255,0.3);
+  padding:12px 16px;border-radius:12px;color:#e8ecff;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+
+  <div style="font-weight:700;color:#6378ff;">🏆 Demo Mode</div>
+  <div style="font-size:12px;color:#8892b0;margin:4px 0 10px;">
+    One-click hackathon showcase
+  </div>
+
+  <button onclick="runDemo()"
+    style="padding:8px 14px;background:linear-gradient(135deg,#6378ff,#4f63ff);
+    border:none;border-radius:8px;color:white;cursor:pointer;font-weight:600;">
+    ▶ Run Live Demo
+  </button>
+</div>
+
+<script>
+function runDemo(){
+  const demoText = `URGENT: Your bank account has been locked due to suspicious activity. 
+Click this link immediately to verify your identity or your account will be permanently closed.`;
+
+  // Auto fill input
+  const input = document.getElementById("userInput");
+  if(input){
+    input.value = demoText;
+  }
+
+  // Auto scroll to tool
+  const tool = document.getElementById("tool");
+  if(tool){
+    tool.scrollIntoView({behavior:"smooth"});
+  }
+
+  // Auto trigger analyze after short delay
+  setTimeout(() => {
+    const btn = document.getElementById("analyzeBtn");
+    if(btn) btn.click();
+  }, 800);
+}
+
+// OPTIONAL: show final branding line cleanly
+window.addEventListener("load", () => {
+  const footer = document.querySelector("footer");
+  if(footer){
+    footer.innerHTML += `<br><br><strong style="color:#6378ff;">
+      SocialMind AI · AI Intelligence System · RoyalPuskar
+    </strong>`;
+  }
+});
+</script>
