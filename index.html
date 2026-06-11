@@ -1271,3 +1271,50 @@ function generateSmartReply(){
 }
 </script>
 
+
+
+<!-- 🚨 SCAM ALERT POPUP -->
+<div id="scamAlertBox"
+  style="display:none;position:fixed;top:20px;right:20px;z-index:9999;
+  background:#1c2235;border:1px solid rgba(255,71,87,0.4);
+  padding:15px 20px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  color:#e8ecff;max-width:280px;">
+
+  <div style="font-weight:700;color:#ff4757;">🚨 Risk Alert</div>
+  <div id="alertText" style="font-size:13px;color:#8892b0;margin-top:5px;">
+    Checking message safety...
+  </div>
+
+  <button onclick="closeAlert()"
+    style="margin-top:10px;padding:6px 12px;background:#ff4757;
+    border:none;border-radius:6px;color:white;cursor:pointer;">
+    Close
+  </button>
+</div>
+
+<script>
+function showScamAlert(score){
+  const box = document.getElementById("scamAlertBox");
+  const text = document.getElementById("alertText");
+
+  if(score >= 70){
+    text.innerHTML = "🚨 HIGH RISK: Do not click links or share data.";
+  }
+  else if(score >= 40){
+    text.innerHTML = "⚠️ Medium risk: Be careful with this message.";
+  }
+  else {
+    text.innerHTML = "✅ Low risk detected, but stay alert.";
+  }
+
+  box.style.display = "block";
+
+  setTimeout(() => {
+    box.style.display = "none";
+  }, 4000);
+}
+
+function closeAlert(){
+  document.getElementById("scamAlertBox").style.display = "none";
+}
+</script>
