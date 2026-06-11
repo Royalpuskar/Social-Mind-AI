@@ -1377,3 +1377,77 @@ window.addEventListener("load", () => {
   }
 });
 </script>
+
+
+
+
+<!-- 🏆 JUDGE Q&A PANEL -->
+<div id="judgePanel"
+  style="max-width:900px;margin:40px auto;padding:20px;
+  background:#1c2235;border:1px solid rgba(99,120,255,0.2);
+  border-radius:12px;color:#e8ecff;">
+
+  <h3 style="color:#6378ff;margin-bottom:10px;">🎤 Judge Q&A Quick Panel</h3>
+  <p style="color:#8892b0;font-size:13px;margin-bottom:15px;">
+    Click a question to show a strong winning answer.
+  </p>
+
+  <div id="qaList"></div>
+
+  <div id="qaAnswer"
+    style="margin-top:15px;padding:12px;
+    background:#161b2a;border-radius:10px;
+    border:1px solid rgba(99,120,255,0.15);
+    color:#8892b0;font-size:14px;">
+    Select a question to view answer...
+  </div>
+</div>
+
+<script>
+const qaData = [
+  {
+    q: "What problem are you solving?",
+    a: "People receive scam, phishing, and manipulation messages daily. SocialMind AI helps detect and prevent these threats before users take action."
+  },
+  {
+    q: "How is your project different?",
+    a: "It is not just a chatbot — it is a digital safety system that analyzes risk, explains danger, and suggests safe actions."
+  },
+  {
+    q: "Is user data stored?",
+    a: "No data is stored. Everything is processed in real time for privacy and safety."
+  },
+  {
+    q: "What makes it innovative?",
+    a: "It combines AI detection with actionable safety guidance like ignore, block, or verify decisions."
+  },
+  {
+    q: "Why should this win?",
+    a: "Because it solves a real-world problem affecting millions and provides instant practical protection."
+  }
+];
+
+const qaList = document.getElementById("qaList");
+
+qaData.forEach((item, i) => {
+  const btn = document.createElement("div");
+  btn.innerHTML = "👉 " + item.q;
+  btn.style.padding = "10px";
+  btn.style.marginBottom = "8px";
+  btn.style.background = "#161b2a";
+  btn.style.border = "1px solid rgba(99,120,255,0.15)";
+  btn.style.borderRadius = "8px";
+  btn.style.cursor = "pointer";
+  btn.style.color = "#e8ecff";
+
+  btn.onmouseover = () => btn.style.borderColor = "#6378ff";
+  btn.onmouseout = () => btn.style.borderColor = "rgba(99,120,255,0.15)";
+
+  btn.onclick = () => {
+    document.getElementById("qaAnswer").innerHTML =
+      "<b style='color:#3de8b0;'>Answer:</b><br>" + item.a;
+  };
+
+  qaList.appendChild(btn);
+});
+</script>
