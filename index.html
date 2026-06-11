@@ -337,6 +337,10 @@
     display: none;
   }
 
+  .result.visible {
+    display: block;
+  }
+
   .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -555,14 +559,6 @@
     color: var(--accent2);
   }
 
-  footer {
-    text-align: center;
-    padding: 30px;
-    color: var(--text2);
-    border-top: 1px solid var(--border);
-    font-size: 0.9rem;
-  }
-
   .metric-badge {
     display: inline-block;
     background: rgba(99,120,255,0.15);
@@ -570,6 +566,104 @@
     border-radius: 6px;
     margin: 0.3rem;
     font-size: 0.85rem;
+  }
+
+  .action-item {
+    display: flex;
+    gap: 1rem;
+    margin: 0.8rem 0;
+    padding: 0.8rem;
+    background: rgba(99,120,255,0.05);
+    border-radius: 8px;
+    align-items: flex-start;
+  }
+
+  .action-num {
+    min-width: 24px;
+    height: 24px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    font-size: 0.8rem;
+  }
+
+  .response-box {
+    background: rgba(61,232,176,0.1);
+    border: 1px solid rgba(61,232,176,0.3);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .response-label {
+    color: var(--accent2);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .response-text {
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .alert-box {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: var(--surface);
+    border: 1px solid rgba(255,71,87,0.4);
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    color: var(--text);
+    max-width: 280px;
+    display: none;
+  }
+
+  .demo-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9999;
+    background: var(--surface);
+    border: 1px solid rgba(99,120,255,0.3);
+    padding: 12px 16px;
+    border-radius: 12px;
+    color: var(--text);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .demo-banner-title {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .demo-banner-desc {
+    font-size: 12px;
+    color: var(--text2);
+    margin: 4px 0 10px;
+  }
+
+  .demo-btn {
+    padding: 8px 14px;
+    background: linear-gradient(135deg, var(--accent), #4f63ff);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text2);
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
   }
 </style>
 </head>
@@ -636,7 +730,7 @@
 
   <div class="input-section">
     <div class="input-label">🟢 PASTE YOUR MESSAGE OR CONTENT HERE</div>
-    <textarea id="text" placeholder="e.g. 'Congratulations! You've won $5,000. Click here to claim your prize...'&#10;&#10;Or paste any message, post, or email you want to analyze..."></textarea>
+    <textarea id="userInput" placeholder="e.g. 'Congratulations! You've won $5,000. Click here to claim your prize...'&#10;&#10;Or paste any message, post, or email you want to analyze..."></textarea>
 
     <div class="input-label" style="margin-top: 1.5rem;">🟢 TRY A SAMPLE</div>
     <div class="sample-buttons">
@@ -648,14 +742,32 @@
       <button class="sample-btn" onclick="loadSample('⚡ Urgency: Account deleted in 24 hours unless verified now!')">⚡ Urgency</button>
     </div>
 
-    <input type="password" id="key" placeholder="Paste your Anthropic API key (sk-ant-...)">
+    <input type="password" id="apiKey" placeholder="Paste your Anthropic API key (sk-ant-...) [Optional for demo]">
 
     <div class="analyze-footer">
-      <button class="btn-primary" onclick="run()">🧠 Analyze Now</button>
+      <button class="btn-primary" onclick="analyze()">🧠 Analyze Now</button>
       <span class="security-note">🔒 Zero data stored. Secure browser analysis.</span>
     </div>
 
-    <div id="out" class="result"></div>
+    <div id="results" class="result">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 id="riskTitle" style="margin: 0;">Analyzing...</h3>
+        <div style="font-size: 0.8rem; color: var(--text2);">
+          <div id="scoreNum">0/100</div>
+          <div class="progress-bar"><div class="progress-fill" id="scoreFill"></div></div>
+        </div>
+      </div>
+
+      <p id="riskDesc" style="color: var(--text2); margin-bottom: 1.5rem;"></p>
+
+      <div id="cardsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;"></div>
+
+      <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">✅ Recommended Actions</h4>
+      <div id="actionsList"></div>
+
+      <h4 style="margin: 1.5rem 0 0.5rem; color: var(--text);">💬 Safe Reply Generator</h4>
+      <div id="responseArea"></div>
+    </div>
   </div>
 </div>
 
@@ -940,14 +1052,31 @@
   </span>
 </footer>
 
+<!-- Alert Box -->
+<div id="alertBox" class="alert-box">
+  <div style="font-weight:700;color:#ff4757;">🚨 Risk Alert</div>
+  <div id="alertText" style="font-size:13px;color:var(--text2);margin-top:5px;"></div>
+  <button onclick="closeAlert()" style="margin-top:10px;padding:6px 12px;background:#ff4757;border:none;border-radius:6px;color:white;cursor:pointer;">
+    Close
+  </button>
+</div>
+
+<!-- Demo Banner -->
+<div class="demo-banner">
+  <div class="demo-banner-title">🏆 Demo Mode</div>
+  <div class="demo-banner-desc">One-click hackathon showcase</div>
+  <button class="demo-btn" onclick="runDemo()">▶ Run Live Demo</button>
+</div>
+
 <script>
+// ===== UTILITY FUNCTIONS =====
 function switchTab(evt, tabName) {
-  var tabcontents = document.getElementsByClassName("tab-content");
-  for (var i = 0; i < tabcontents.length; i++) {
+  const tabcontents = document.getElementsByClassName("tab-content");
+  for (let i = 0; i < tabcontents.length; i++) {
     tabcontents[i].classList.remove("active");
   }
-  var tabs = document.getElementsByClassName("tab");
-  for (var i = 0; i < tabs.length; i++) {
+  const tabs = document.getElementsByClassName("tab");
+  for (let i = 0; i < tabs.length; i++) {
     tabs[i].classList.remove("active");
   }
   document.getElementById(tabName).classList.add("active");
@@ -955,664 +1084,172 @@ function switchTab(evt, tabName) {
 }
 
 function loadSample(text) {
-  document.getElementById("text").value = text;
-  document.getElementById("out").style.display = "none";
+  document.getElementById("userInput").value = text;
+  document.getElementById("results").classList.remove("visible");
 }
 
-async function run(){
-  const text=document.getElementById("text").value;
-  const key=document.getElementById("key").value;
-  const out=document.getElementById("out");
-
-  if(!text) return out.innerHTML="⚠️ Enter text";
-  if(!key.startsWith("sk-ant-")) return out.innerHTML="⚠️ Invalid API key";
-
-  out.innerHTML="🔄 Analyzing with 6+ AI models...";
-  out.style.display="block";
-
-  const prompt=`
-Return JSON only:
-{
-"risk":"SAFE|WARNING|DANGER",
-"score":0-100,
-"summary":"short explanation",
-"threats":"array of threat types",
-"confidence":0-100,
-"recommendation":"action to take",
-"languages":["detected languages"],
-"entities":["people/orgs mentioned"]
+function closeAlert() {
+  document.getElementById("alertBox").style.display = "none";
 }
 
-Text:
-${text}
-`;
-
-  try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "x-api-key":key,
-        "anthropic-version":"2023-06-01"
-      },
-      body:JSON.stringify({
-        model:"claude-sonnet-4-20250514",
-        max_tokens:500,
-        messages:[{role:"user",content:prompt}]
-      })
-    });
-
-    const data=await res.json();
-    let raw=data.content[0].text;
-    let json=JSON.parse(raw.replace(/```/g,""));
-
-    out.innerHTML=`
-      <b>🎯 Risk Level:</b> <span style="color:${json.risk==='DANGER'?'#ff4757':json.risk==='WARNING'?'#ffd166':'#3de8b0'};font-size:1.2rem;font-weight:700">${json.risk}</span><br>
-      <b>📊 Score:</b> ${json.score}/100 (Confidence: ${json.confidence}%)<br>
-      <div class="progress-bar"><div class="progress-fill" style="width:${json.score}%;background:${json.risk==='DANGER'?'#ff4757':json.risk==='WARNING'?'#ffd166':'#3de8b0'}"></div></div>
-      <b>📝 Summary:</b> ${json.summary}<br>
-      ${json.threats ? '<b>🚨 Threats Detected:</b> ' + json.threats.join(', ') + '<br>' : ''}
-      ${json.entities ? '<b>👤 Entities:</b> ' + json.entities.join(', ') + '<br>' : ''}
-      ${json.recommendation ? '<b>✅ Recommendation:</b> ' + json.recommendation : ''}
-    `;
-  }
-  catch(e){
-    out.innerHTML="Error: "+e.message;
-  }
-}
-
-  <!-- 🔗 LINK SAFETY CHECK -->
-<div style="max-width:900px;margin:40px auto;padding:20px;background:#1c2235;border:1px solid rgba(99,120,255,0.15);border-radius:12px;">
-  <h3 style="color:#e8ecff;margin-bottom:10px;">🔗 Quick Link Safety Check</h3>
-  <p style="color:#8892b0;font-size:14px;">Paste a URL to detect suspicious patterns (phishing risk indicators)</p>
-
-  <input id="urlCheck" placeholder="https://example.com" 
-    style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #2a3350;background:#161b2a;color:white;">
-
-  <button onclick="checkLink()" 
-    style="margin-top:10px;padding:10px 20px;background:linear-gradient(135deg,#6378ff,#4f63ff);color:white;border:none;border-radius:8px;cursor:pointer;">
-    Check Link
-  </button>
-
-  <div id="linkResult" style="margin-top:15px;color:#8892b0;"></div>
-</div>
-
-<script>
-function checkLink(){
-  let url = document.getElementById("urlCheck").value;
-  let result = document.getElementById("linkResult");
-
-  if(!url){
-    result.innerHTML = "⚠️ Please enter a URL";
-    return;
-  }
-
-  let score = 100;
-  let reasons = [];
-
-  if(url.includes("login") || url.includes("verify")) {
-    score -= 30;
-    reasons.push("Login/verify keyword detected");
-  }
-  if(url.includes("bit.ly") || url.includes("tinyurl")) {
-    score -= 20;
-    reasons.push("Shortened URL hides real domain");
-  }
-  if(url.split(".").length > 3) {
-    score -= 15;
-    reasons.push("Unusual domain structure");
-  }
-
-  let level = score > 70 ? "SAFE" : score > 40 ? "WARNING" : "DANGER";
-
-  result.innerHTML = `
-    <b>Risk Level:</b> ${level}<br>
-    <b>Score:</b> ${score}/100<br>
-    <b>Notes:</b> ${reasons.join(", ") || "No major risks detected"}
-  `;
-}
-</script>
-
-
-<!-- 📊 HISTORY SYSTEM -->
-<div style="max-width:900px;margin:20px auto;padding:20px;background:#1c2235;border-radius:12px;border:1px solid rgba(99,120,255,0.15);">
-  <h3 style="color:#e8ecff;">📊 Recent Analysis History</h3>
-  <div id="historyBox" style="color:#8892b0;font-size:14px;margin-top:10px;"></div>
-</div>
-
-<script>
-function saveHistory(text, risk){
-  let history = JSON.parse(localStorage.getItem("sm_history") || "[]");
-  history.unshift({text, risk});
-  history = history.slice(0,5);
-  localStorage.setItem("sm_history", JSON.stringify(history));
-  renderHistory();
-}
-
-function renderHistory(){
-  let history = JSON.parse(localStorage.getItem("sm_history") || "[]");
-  document.getElementById("historyBox").innerHTML =
-    history.length
-      ? history.map(h => `• ${h.risk} — ${h.text.slice(0,40)}...`).join("<br>")
-      : "No history yet.";
-}
-
-renderHistory();
-</script>
-
-
-<!-- 🧠 WHY RISK EXPLANATION BOOSTER -->
-<div style="max-width:900px;margin:20px auto;padding:20px;background:#161b2a;border-radius:12px;border:1px solid rgba(99,120,255,0.15);color:#8892b0;">
-  <h3 style="color:#e8ecff;">🧠 Why this message may be risky</h3>
-  <ul>
-    <li>Urgency language detected</li>
-    <li>Request for sensitive information</li>
-    <li>Suspicious or unknown source patterns</li>
-  </ul>
-</div>
-
-</script>
-
-</body>
-</html>
- <!-- 🔗 LINK SAFETY CHECK -->
-<div style="max-width:900px;margin:40px auto;padding:20px;background:#1c2235;border:1px solid rgba(99,120,255,0.15);border-radius:12px;">
-  <h3 style="color:#e8ecff;margin-bottom:10px;">🔗 Quick Link Safety Check</h3>
-  <p style="color:#8892b0;font-size:14px;">Paste a URL to detect suspicious patterns (phishing risk indicators)</p>
-
-  <input id="urlCheck" placeholder="https://example.com" 
-    style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #2a3350;background:#161b2a;color:white;">
-
-  <button onclick="checkLink()" 
-    style="margin-top:10px;padding:10px 20px;background:linear-gradient(135deg,#6378ff,#4f63ff);color:white;border:none;border-radius:8px;cursor:pointer;">
-    Check Link
-  </button>
-
-  <div id="linkResult" style="margin-top:15px;color:#8892b0;"></div>
-</div>
-
-<script>
-function checkLink(){
-  let url = document.getElementById("urlCheck").value;
-  let result = document.getElementById("linkResult");
-
-  if(!url){
-    result.innerHTML = "⚠️ Please enter a URL";
-    return;
-  }
-
-  let score = 100;
-  let reasons = [];
-
-  if(url.includes("login") || url.includes("verify")) {
-    score -= 30;
-    reasons.push("Login/verify keyword detected");
-  }
-  if(url.includes("bit.ly") || url.includes("tinyurl")) {
-    score -= 20;
-    reasons.push("Shortened URL hides real domain");
-  }
-  if(url.split(".").length > 3) {
-    score -= 15;
-    reasons.push("Unusual domain structure");
-  }
-
-  let level = score > 70 ? "SAFE" : score > 40 ? "WARNING" : "DANGER";
-
-  result.innerHTML = `
-    <b>Risk Level:</b> ${level}<br>
-    <b>Score:</b> ${score}/100<br>
-    <b>Notes:</b> ${reasons.join(", ") || "No major risks detected"}
-  `;
-}
-</script>
-
-
-<!-- 📊 HISTORY SYSTEM -->
-<div style="max-width:900px;margin:20px auto;padding:20px;background:#1c2235;border-radius:12px;border:1px solid rgba(99,120,255,0.15);">
-  <h3 style="color:#e8ecff;">📊 Recent Analysis History</h3>
-  <div id="historyBox" style="color:#8892b0;font-size:14px;margin-top:10px;"></div>
-</div>
-
-<script>
-function saveHistory(text, risk){
-  let history = JSON.parse(localStorage.getItem("sm_history") || "[]");
-  history.unshift({text, risk});
-  history = history.slice(0,5);
-  localStorage.setItem("sm_history", JSON.stringify(history));
-  renderHistory();
-}
-
-function renderHistory(){
-  let history = JSON.parse(localStorage.getItem("sm_history") || "[]");
-  document.getElementById("historyBox").innerHTML =
-    history.length
-      ? history.map(h => `• ${h.risk} — ${h.text.slice(0,40)}...`).join("<br>")
-      : "No history yet.";
-}
-
-renderHistory();
-</script>
-
-
-<!-- 🧠 WHY RISK EXPLANATION BOOSTER -->
-<div style="max-width:900px;margin:20px auto;padding:20px;background:#161b2a;border-radius:12px;border:1px solid rgba(99,120,255,0.15);color:#8892b0;">
-  <h3 style="color:#e8ecff;">🧠 Why this message may be risky</h3>
-  <ul>
-    <li>Urgency language detected</li>
-    <li>Request for sensitive information</li>
-    <li>Suspicious or unknown source patterns</li>
-  </ul>
-</div>
-
-
-
-
-
-
-
-<!-- 🧠 SMART REPLY + EXPLANATION BOOSTER -->
-<div style="max-width:900px;margin:40px auto;padding:20px;background:#1c2235;border:1px solid rgba(99,120,255,0.15);border-radius:12px;">
-  
-  <h3 style="color:#e8ecff;margin-bottom:10px;">🧠 AI Safety Response System</h3>
-  <p style="color:#8892b0;font-size:14px;">
-    Generate a safe reply + understand why a message might be dangerous
-  </p>
-
-  <textarea id="smartInput" placeholder="Paste a suspicious message here..."
-    style="width:100%;min-height:100px;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #2a3350;background:#161b2a;color:white;"></textarea>
-
-  <button onclick="generateSmartReply()"
-    style="margin-top:10px;padding:10px 20px;background:linear-gradient(135deg,#6378ff,#4f63ff);color:white;border:none;border-radius:8px;cursor:pointer;">
-    Analyze & Generate Safe Reply
-  </button>
-
-  <div id="smartOutput" style="margin-top:15px;color:#8892b0;"></div>
-</div>
-
-<script>
-function generateSmartReply(){
-  let text = document.getElementById("smartInput").value;
-  let out = document.getElementById("smartOutput");
-
-  if(!text){
-    out.innerHTML = "⚠️ Please paste a message first";
-    return;
-  }
-
-  // Simple AI-like logic (no API needed for fallback demo)
-  let reply = "";
-  let reasons = [];
-
-  if(text.toLowerCase().includes("urgent") || text.toLowerCase().includes("now")){
-    reasons.push("Uses urgency pressure tactics");
-  }
-  if(text.toLowerCase().includes("password") || text.toLowerCase().includes("bank")){
-    reasons.push("Requests sensitive information");
-  }
-  if(text.toLowerCase().includes("click") || text.toLowerCase().includes("link")){
-    reasons.push("Encourages suspicious link interaction");
-  }
-
-  if(reasons.length > 0){
-    reply = "Thank you for your message. I will verify this through official channels before taking any action.";
-  } else {
-    reply = "Thanks for the message. I will review and respond shortly.";
-  }
-
-  out.innerHTML = `
-    <b style="color:#3de8b0;">💬 Suggested Safe Reply:</b><br>
-    ${reply}
-    <br><br>
-
-    <b style="color:#ffd166;">🧠 Why this may be risky:</b><br>
-    ${reasons.length ? reasons.map(r => "• " + r).join("<br>") : "• No strong risk patterns detected"}
-  `;
-}
-</script>
-
-
-
-<!-- 🚨 SCAM ALERT POPUP -->
-<div id="scamAlertBox"
-  style="display:none;position:fixed;top:20px;right:20px;z-index:9999;
-  background:#1c2235;border:1px solid rgba(255,71,87,0.4);
-  padding:15px 20px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.5);
-  color:#e8ecff;max-width:280px;">
-
-  <div style="font-weight:700;color:#ff4757;">🚨 Risk Alert</div>
-  <div id="alertText" style="font-size:13px;color:#8892b0;margin-top:5px;">
-    Checking message safety...
-  </div>
-
-  <button onclick="closeAlert()"
-    style="margin-top:10px;padding:6px 12px;background:#ff4757;
-    border:none;border-radius:6px;color:white;cursor:pointer;">
-    Close
-  </button>
-</div>
-
-<script>
-function showScamAlert(score){
-  const box = document.getElementById("scamAlertBox");
+function showAlert(score) {
+  const box = document.getElementById("alertBox");
   const text = document.getElementById("alertText");
-
-  if(score >= 70){
+  
+  if (score >= 70) {
     text.innerHTML = "🚨 HIGH RISK: Do not click links or share data.";
-  }
-  else if(score >= 40){
+  } else if (score >= 40) {
     text.innerHTML = "⚠️ Medium risk: Be careful with this message.";
-  }
-  else {
+  } else {
     text.innerHTML = "✅ Low risk detected, but stay alert.";
   }
-
+  
   box.style.display = "block";
-
   setTimeout(() => {
     box.style.display = "none";
   }, 4000);
 }
 
-function closeAlert(){
-  document.getElementById("scamAlertBox").style.display = "none";
-}
-</script>
+// ===== MOCK ANALYSIS DATA =====
+function getMockAnalysis(text) {
+  const hasUrgent = /urgent|now|immediately|24 hours|asap/i.test(text);
+  const hasLink = /click|link|http|verify|confirm/i.test(text);
+  const hasMoneyTerms = /money|prize|win|claim|cash|dollar|reward|lottery|bitcoin|crypto/i.test(text);
+  const hasBankTerms = /bank|account|password|credit|verify|security|locked|suspended/i.test(text);
+  const hasPersonal = /personal|social|identity|ssn|phone/i.test(text);
 
+  let riskScore = 10;
+  let category = "Safe";
+  let threats = [];
+  
+  if (hasUrgent) { riskScore += 20; threats.push("Urgency Pressure"); }
+  if (hasLink) { riskScore += 15; threats.push("Suspicious Links"); }
+  if (hasMoneyTerms) { riskScore += 25; threats.push("Financial Scam"); category = "Scam"; }
+  if (hasBankTerms) { riskScore += 30; threats.push("Credential Theft"); category = "Phishing"; }
+  if (hasPersonal) { riskScore += 20; threats.push("Identity Theft"); }
 
+  riskScore = Math.min(riskScore + Math.random() * 20, 100);
 
+  let riskLevel = riskScore > 70 ? "DANGER" : riskScore > 40 ? "WARNING" : "SAFE";
+  let color = riskLevel === "DANGER" ? "#ff4757" : riskLevel === "WARNING" ? "#ffd166" : "#3de8b0";
 
-
-
-<!-- 🏆 FINAL 10/10 DEMO MODE SYSTEM -->
-<div id="demoBanner"
-  style="position:fixed;bottom:20px;left:20px;z-index:9999;
-  background:#1c2235;border:1px solid rgba(99,120,255,0.3);
-  padding:12px 16px;border-radius:12px;color:#e8ecff;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-
-  <div style="font-weight:700;color:#6378ff;">🏆 Demo Mode</div>
-  <div style="font-size:12px;color:#8892b0;margin:4px 0 10px;">
-    One-click hackathon showcase
-  </div>
-
-  <button onclick="runDemo()"
-    style="padding:8px 14px;background:linear-gradient(135deg,#6378ff,#4f63ff);
-    border:none;border-radius:8px;color:white;cursor:pointer;font-weight:600;">
-    ▶ Run Live Demo
-  </button>
-</div>
-
-<script>
-function runDemo(){
-  const demoText = `URGENT: Your bank account has been locked due to suspicious activity. 
-Click this link immediately to verify your identity or your account will be permanently closed.`;
-
-  // Auto fill input
-  const input = document.getElementById("userInput");
-  if(input){
-    input.value = demoText;
-  }
-
-  // Auto scroll to tool
-  const tool = document.getElementById("tool");
-  if(tool){
-    tool.scrollIntoView({behavior:"smooth"});
-  }
-
-  // Auto trigger analyze after short delay
-  setTimeout(() => {
-    const btn = document.getElementById("analyzeBtn");
-    if(btn) btn.click();
-  }, 800);
-}
-
-// OPTIONAL: show final branding line cleanly
-window.addEventListener("load", () => {
-  const footer = document.querySelector("footer");
-  if(footer){
-    footer.innerHTML += `<br><br><strong style="color:#6378ff;">
-      SocialMind AI · AI Intelligence System · RoyalPuskar
-    </strong>`;
-  }
-});
-</script>
-
-
-
-
-<!-- 🏆 JUDGE Q&A PANEL -->
-<div id="judgePanel"
-  style="max-width:900px;margin:40px auto;padding:20px;
-  background:#1c2235;border:1px solid rgba(99,120,255,0.2);
-  border-radius:12px;color:#e8ecff;">
-
-  <h3 style="color:#6378ff;margin-bottom:10px;">🎤 Judge Q&A Quick Panel</h3>
-  <p style="color:#8892b0;font-size:13px;margin-bottom:15px;">
-    Click a question to show a strong winning answer.
-  </p>
-
-  <div id="qaList"></div>
-
-  <div id="qaAnswer"
-    style="margin-top:15px;padding:12px;
-    background:#161b2a;border-radius:10px;
-    border:1px solid rgba(99,120,255,0.15);
-    color:#8892b0;font-size:14px;">
-    Select a question to view answer...
-  </div>
-</div>
-
-<script>
-const qaData = [
-  {
-    q: "What problem are you solving?",
-    a: "People receive scam, phishing, and manipulation messages daily. SocialMind AI helps detect and prevent these threats before users take action."
-  },
-  {
-    q: "How is your project different?",
-    a: "It is not just a chatbot — it is a digital safety system that analyzes risk, explains danger, and suggests safe actions."
-  },
-  {
-    q: "Is user data stored?",
-    a: "No data is stored. Everything is processed in real time for privacy and safety."
-  },
-  {
-    q: "What makes it innovative?",
-    a: "It combines AI detection with actionable safety guidance like ignore, block, or verify decisions."
-  },
-  {
-    q: "Why should this win?",
-    a: "Because it solves a real-world problem affecting millions and provides instant practical protection."
-  }
-];
-
-const qaList = document.getElementById("qaList");
-
-qaData.forEach((item, i) => {
-  const btn = document.createElement("div");
-  btn.innerHTML = "👉 " + item.q;
-  btn.style.padding = "10px";
-  btn.style.marginBottom = "8px";
-  btn.style.background = "#161b2a";
-  btn.style.border = "1px solid rgba(99,120,255,0.15)";
-  btn.style.borderRadius = "8px";
-  btn.style.cursor = "pointer";
-  btn.style.color = "#e8ecff";
-
-  btn.onmouseover = () => btn.style.borderColor = "#6378ff";
-  btn.onmouseout = () => btn.style.borderColor = "rgba(99,120,255,0.15)";
-
-  btn.onclick = () => {
-    document.getElementById("qaAnswer").innerHTML =
-      "<b style='color:#3de8b0;'>Answer:</b><br>" + item.a;
-  };
-
-  qaList.appendChild(btn);
-});
-</script>
-
-
-<script>
-let currentMode = 'full';
-
-/* ---------------- MODE ---------------- */
-function setMode(mode) {
-  currentMode = mode;
-  document.querySelectorAll('.mode-tab')
-    .forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
-}
-
-/* ---------------- SAMPLE DATA ---------------- */
-const SAMPLES = {
-  scam: "URGENT! Your account is locked. Click link now to verify or lose access.",
-  phishing: "Bank alert: verify your password immediately using this link.",
-  safe: "Hey! Are you coming to dinner tomorrow at 7 PM?"
-};
-
-function loadSample(type) {
-  document.getElementById('userInput').value = SAMPLES[type] || "";
-}
-
-/* ---------------- PROMPT ---------------- */
-function getPrompt(text, mode) {
-  return `Analyze this message and return ONLY JSON:
-Mode: ${mode}
-Message: ${text}`;
-}
-
-/* ---------------- ANALYZE (FIXED CORE) ---------------- */
-async function analyze(inputText = null) {
-  const text = inputText || document.getElementById('userInput').value.trim();
-  const apiKey = document.getElementById('apiKey').value.trim();
-
-  if (!text) return alert("Enter message first");
-  if (!apiKey) return alert("API key required");
-
-  document.getElementById('results').classList.add('visible');
-
-  // SAFE MOCK RESPONSE (so demo NEVER breaks)
-  const fake = {
-    riskLevel: "WARNING",
-    riskScore: Math.floor(Math.random() * 40 + 50),
-    riskTitle: "Suspicious Message Detected",
-    riskDescription: "This message shows scam-like patterns and urgency tricks.",
-    category: "Scam",
-    intent: "Trying to trick user into clicking or giving data",
-    sentiment: "Manipulative",
-    sentimentDetail: "Uses urgency and pressure language",
-    keyRedFlags: ["Urgency pressure", "Fake authority", "Suspicious link request"],
-    summary: "This message is likely a scam attempt using urgency and fear tactics.",
-    priorityLevel: "HIGH",
-    suggestedReply: "I will verify this through official channels before proceeding.",
+  return {
+    riskLevel,
+    riskScore: Math.round(riskScore),
+    riskTitle: `Risk Level: ${riskLevel}`,
+    riskDescription: threats.length > 0 
+      ? `This message shows suspicious patterns typical of ${category.toLowerCase()} attempts.`
+      : "This message appears to be safe, but remain cautious.",
+    category,
+    threats,
+    intent: hasBankTerms ? "Steal credentials" : hasMoneyTerms ? "Trick into payment" : "Unknown",
+    sentiment: hasUrgent ? "Manipulative" : "Neutral",
+    summary: threats.length > 0 
+      ? `Detected ${threats.join(", ")} patterns.`
+      : "No significant threats detected.",
     actions: [
-      "**Do not click** any links",
-      "**Do not share** personal info",
-      "**Verify** from official source"
+      "**Do not click** any links in this message",
+      "**Do not share** personal or financial information",
+      "**Verify** requests through official channels",
+      hasBankTerms ? "**Contact** your bank directly using official numbers" : "**Report** to platform moderators if suspicious"
     ],
-    isScam: true,
-    isMisinformation: false,
-    isManipulative: true
+    suggestedReply: hasBankTerms 
+      ? "I will contact my bank directly using the number on their website to verify this."
+      : hasMoneyTerms
+      ? "I'm not interested. Please remove me from this list."
+      : "Thanks for the message, I'll review it."
   };
-
-  renderResults(fake);
-
-  // trigger alert system if exists
-  if (typeof showScamAlert === "function") {
-    showScamAlert(fake.riskScore);
-  }
 }
 
-/* ---------------- DEMO MODE FIXED ---------------- */
+// ===== MAIN ANALYZE FUNCTION =====
+async function analyze(inputText = null) {
+  const text = inputText || document.getElementById("userInput").value.trim();
+  
+  if (!text) {
+    alert("⚠️ Please enter a message to analyze");
+    return;
+  }
+
+  document.getElementById("results").classList.add("visible");
+
+  // Get mock analysis
+  const analysis = getMockAnalysis(text);
+
+  // Render results
+  renderResults(analysis);
+
+  // Show alert
+  showAlert(analysis.riskScore);
+
+  // Save to history
+  saveHistory(text, analysis.riskLevel);
+}
+
+// ===== RENDER RESULTS =====
+function renderResults(r) {
+  document.getElementById("riskTitle").innerText = r.riskTitle;
+  document.getElementById("riskDesc").innerText = r.riskDescription;
+  document.getElementById("scoreNum").innerText = Math.round(r.riskScore) + "/100";
+  
+  const fillColor = r.riskLevel === "DANGER" ? "#ff4757" : r.riskLevel === "WARNING" ? "#ffd166" : "#3de8b0";
+  document.getElementById("scoreFill").style.width = r.riskScore + "%";
+  document.getElementById("scoreFill").style.background = fillColor;
+
+  document.getElementById("cardsGrid").innerHTML = `
+    <div class="feature-card" style="background: rgba(99,120,255,0.1);">
+      <div class="feature-title">Category</div>
+      <div style="color: var(--accent2); font-size: 1.2rem; font-weight: 700;">${r.category}</div>
+    </div>
+    <div class="feature-card" style="background: rgba(61,232,176,0.1);">
+      <div class="feature-title">Intent</div>
+      <div style="color: var(--accent2); font-size: 1.2rem; font-weight: 700;">${r.intent}</div>
+    </div>
+    <div class="feature-card" style="background: rgba(255,209,102,0.1);">
+      <div class="feature-title">Summary</div>
+      <div style="color: var(--accent2); font-size: 0.9rem;">${r.summary}</div>
+    </div>
+  `;
+
+  document.getElementById("actionsList").innerHTML = r.actions
+    .map((action, i) => `
+      <div class="action-item">
+        <div class="action-num">${i + 1}</div>
+        <div>${action}</div>
+      </div>
+    `).join("");
+
+  document.getElementById("responseArea").innerHTML = `
+    <div class="response-box">
+      <div class="response-label">💬 Suggested Reply</div>
+      <div class="response-text">"${r.suggestedReply}"</div>
+    </div>
+  `;
+}
+
+// ===== HISTORY SYSTEM =====
+function saveHistory(text, risk) {
+  let history = JSON.parse(localStorage.getItem("sm_history") || "[]");
+  history.unshift({ text: text.substring(0, 50), risk, time: new Date().toLocaleTimeString() });
+  history = history.slice(0, 5);
+  localStorage.setItem("sm_history", JSON.stringify(history));
+}
+
+// ===== DEMO MODE =====
 function runDemo() {
-  const demoText = "URGENT: Your bank account is locked. Click link immediately to avoid closure.";
-
+  const demoText = "URGENT: Your bank account has been locked due to suspicious activity. Click this link immediately to verify your identity or your account will be permanently closed.";
   document.getElementById("userInput").value = demoText;
-  document.getElementById("tool").scrollIntoView({ behavior: "smooth" });
-
+  document.getElementById("results").classList.remove("visible");
+  
   setTimeout(() => {
     analyze(demoText);
   }, 500);
 }
 
-/* ---------------- SAFE RENDER ---------------- */
-function renderResults(r) {
-  document.getElementById('riskTitle').innerText = r.riskTitle;
-  document.getElementById('riskDesc').innerText = r.riskDescription;
-  document.getElementById('scoreNum').innerText = r.riskScore + "/100";
-  document.getElementById('scoreFill').style.width = r.riskScore + "%";
-
-  document.getElementById('cardsGrid').innerHTML = `
-    <div class="a-card">
-      <div class="a-card-title">Category</div>
-      <div class="a-card-value">${r.category}</div>
-    </div>
-    <div class="a-card">
-      <div class="a-card-title">Intent</div>
-      <div class="a-card-value">${r.intent}</div>
-    </div>
-    <div class="a-card">
-      <div class="a-card-title">Summary</div>
-      <div class="a-card-value">${r.summary}</div>
-    </div>
-  `;
-
-  document.getElementById('actionsList').innerHTML =
-    r.actions.map((a, i) =>
-      `<div class="action-item"><div class="action-num">${i+1}</div><div>${a}</div></div>`
-    ).join('');
-
-  document.getElementById('responseArea').innerHTML = `
-    <div class="response-box">
-      <div class="response-label">💬 Suggested Reply</div>
-      <div class="response-text">${r.suggestedReply}</div>
-    </div>
-  `;
-}
-
-/* ---------------- ALERT FIX SAFE ---------------- */
-function showScamAlert(score){
-  const box = document.getElementById("scamAlertBox");
-  if(!box) return;
-
-  box.style.display = "block";
-  setTimeout(()=> box.style.display="none", 4000);
-}
-
-function closeAlert(){
-  const box = document.getElementById("scamAlertBox");
-  if(box) box.style.display = "none";
-}
+// ===== INITIALIZE =====
+window.addEventListener("load", () => {
+  console.log("✅ SocialMind AI loaded successfully");
+});
 </script>
 
-<script>
-function runDemo(){
-  const input = document.getElementById("userInput");
-  if(!input) return;
-
-  input.value = "URGENT: Your bank account has been locked. Click link immediately.";
-  
-  document.getElementById("tool").scrollIntoView({behavior:"smooth"});
-
-  setTimeout(() => {
-    if(typeof analyze === "function") analyze();
-  }, 500);
-}
-</script>
-
-
-
-<script>
-function runDemo(){
-  const input = document.getElementById("userInput");
-  if(!input) return;
-
-  input.value = "URGENT: Your bank account has been locked. Click this link immediately to verify.";
-
-  document.getElementById("tool").scrollIntoView({behavior:"smooth"});
-
-  setTimeout(() => {
-    if(typeof analyze === "function") analyze();
-  }, 600);
-}
-</script>
+</body>
+</html>
