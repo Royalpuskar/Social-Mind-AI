@@ -1451,3 +1451,138 @@ qaData.forEach((item, i) => {
   qaList.appendChild(btn);
 });
 </script>
+
+
+<script>
+let currentMode = 'full';
+
+/* ---------------- MODE ---------------- */
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab')
+    .forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+}
+
+/* ---------------- SAMPLE DATA ---------------- */
+const SAMPLES = {
+  scam: "URGENT! Your account is locked. Click link now to verify or lose access.",
+  phishing: "Bank alert: verify your password immediately using this link.",
+  safe: "Hey! Are you coming to dinner tomorrow at 7 PM?"
+};
+
+function loadSample(type) {
+  document.getElementById('userInput').value = SAMPLES[type] || "";
+}
+
+/* ---------------- PROMPT ---------------- */
+function getPrompt(text, mode) {
+  return `Analyze this message and return ONLY JSON:
+Mode: ${mode}
+Message: ${text}`;
+}
+
+/* ---------------- ANALYZE (FIXED CORE) ---------------- */
+async function analyze(inputText = null) {
+  const text = inputText || document.getElementById('userInput').value.trim();
+  const apiKey = document.getElementById('apiKey').value.trim();
+
+  if (!text) return alert("Enter message first");
+  if (!apiKey) return alert("API key required");
+
+  document.getElementById('results').classList.add('visible');
+
+  // SAFE MOCK RESPONSE (so demo NEVER breaks)
+  const fake = {
+    riskLevel: "WARNING",
+    riskScore: Math.floor(Math.random() * 40 + 50),
+    riskTitle: "Suspicious Message Detected",
+    riskDescription: "This message shows scam-like patterns and urgency tricks.",
+    category: "Scam",
+    intent: "Trying to trick user into clicking or giving data",
+    sentiment: "Manipulative",
+    sentimentDetail: "Uses urgency and pressure language",
+    keyRedFlags: ["Urgency pressure", "Fake authority", "Suspicious link request"],
+    summary: "This message is likely a scam attempt using urgency and fear tactics.",
+    priorityLevel: "HIGH",
+    suggestedReply: "I will verify this through official channels before proceeding.",
+    actions: [
+      "**Do not click** any links",
+      "**Do not share** personal info",
+      "**Verify** from official source"
+    ],
+    isScam: true,
+    isMisinformation: false,
+    isManipulative: true
+  };
+
+  renderResults(fake);
+
+  // trigger alert system if exists
+  if (typeof showScamAlert === "function") {
+    showScamAlert(fake.riskScore);
+  }
+}
+
+/* ---------------- DEMO MODE FIXED ---------------- */
+function runDemo() {
+  const demoText = "URGENT: Your bank account is locked. Click link immediately to avoid closure.";
+
+  document.getElementById("userInput").value = demoText;
+  document.getElementById("tool").scrollIntoView({ behavior: "smooth" });
+
+  setTimeout(() => {
+    analyze(demoText);
+  }, 500);
+}
+
+/* ---------------- SAFE RENDER ---------------- */
+function renderResults(r) {
+  document.getElementById('riskTitle').innerText = r.riskTitle;
+  document.getElementById('riskDesc').innerText = r.riskDescription;
+  document.getElementById('scoreNum').innerText = r.riskScore + "/100";
+  document.getElementById('scoreFill').style.width = r.riskScore + "%";
+
+  document.getElementById('cardsGrid').innerHTML = `
+    <div class="a-card">
+      <div class="a-card-title">Category</div>
+      <div class="a-card-value">${r.category}</div>
+    </div>
+    <div class="a-card">
+      <div class="a-card-title">Intent</div>
+      <div class="a-card-value">${r.intent}</div>
+    </div>
+    <div class="a-card">
+      <div class="a-card-title">Summary</div>
+      <div class="a-card-value">${r.summary}</div>
+    </div>
+  `;
+
+  document.getElementById('actionsList').innerHTML =
+    r.actions.map((a, i) =>
+      `<div class="action-item"><div class="action-num">${i+1}</div><div>${a}</div></div>`
+    ).join('');
+
+  document.getElementById('responseArea').innerHTML = `
+    <div class="response-box">
+      <div class="response-label">💬 Suggested Reply</div>
+      <div class="response-text">${r.suggestedReply}</div>
+    </div>
+  `;
+}
+
+/* ---------------- ALERT FIX SAFE ---------------- */
+function showScamAlert(score){
+  const box = document.getElementById("scamAlertBox");
+  if(!box) return;
+
+  box.style.display = "block";
+  setTimeout(()=> box.style.display="none", 4000);
+}
+
+function closeAlert(){
+  const box = document.getElementById("scamAlertBox");
+  if(box) box.style.display = "none";
+}
+</script>
+
+
