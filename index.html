@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SocialMind AI</title>
+</head>
+<body>
+
+<h1>🧠 SocialMind AI</h1>
+
+<p>Paste a message below:</p>
+
+<textarea id="message" rows="8" cols="60"></textarea>
+<br><br>
+
+<button onclick="analyze()">Analyze</button>
+
+<div id="result"></div>
+
+<script>
+function analyze() {
+  let text = document.getElementById("message").value.toLowerCase();
+
+  let risk = "Low";
+  let advice = "Looks normal.";
+
+  if(text.includes("urgent") || text.includes("click") || text.includes("password")) {
+    risk = "High";
+    advice = "Possible scam detected. Verify before responding.";
+  }
+
+  document.getElementById("result").innerHTML =
+  "<h3>Analysis Result</h3>" +
+  "<p><b>Risk:</b> " + risk + "</p>" +
+  "<p><b>Advice:</b> " + advice + "</p>";
+}
+</script>
+
+</body>
+</html>
