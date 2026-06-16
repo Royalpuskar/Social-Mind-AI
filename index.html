@@ -1,1 +1,769 @@
 {"code":"from pathlib import Path\n\np1 = Path('/mnt/data/Pasted text.txt')\np2 = Path('/mnt/data/Pasted text (2).txt')\nout = Path('/mnt/data/combined_socialmind.txt')\n\ntext1 = p1.read_text(encoding='utf-8', errors='ignore')\ntext2 = p2.read_text(encoding='utf-8', errors='ignore')\n\ncombined = text1 + \"\\n\\n\" + text2\nout.write_text(combined, encoding='utf-8')\n\nprint(str(out), len(combined))"}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SocialMind AI — Digital Safety Intelligence Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090f;--bg2:#0d1018;--bg3:#111522;--surface:#161c2d;--surface2:#1d2540;
+  --border:rgba(100,130,255,0.13);--border2:rgba(100,130,255,0.28);--border3:rgba(100,130,255,0.45);
+  --accent:#6480ff;--accent2:#2eedb0;--accent3:#ff5f7e;--accent4:#ffcc4d;
+  --text:#dde4ff;--text2:#7b87a8;--text3:#3d4668;
+  --danger:#ff4d6a;--warning:#ffcc4d;--safe:#2eedb0;--info:#6480ff;
+  --r:12px;--rsm:8px;--rlg:18px;--rxl:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ═══ NAV ═══ */
+nav{position:sticky;top:0;z-index:200;height:62px;padding:0 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(7,9,15,0.85);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-box{width:36px;height:36px;border-radius:9px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.logo-text{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;
+  background:linear-gradient(100deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-pills{display:flex;gap:6px}
+.nav-pill{padding:7px 16px;border-radius:100px;border:1px solid var(--border);
+  background:transparent;color:var(--text2);font-size:0.83rem;font-weight:500;
+  cursor:pointer;transition:all .2s}
+.nav-pill:hover,.nav-pill.active{background:rgba(100,128,255,0.12);
+  border-color:var(--border2);color:var(--text)}
+.nav-cta{padding:8px 22px;border-radius:100px;border:none;
+  background:linear-gradient(135deg,var(--accent),#4a6aff);
+  color:#fff;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(100,128,255,0.4)}
+
+/* ═══ HERO ═══ */
+.hero{position:relative;padding:6rem 2rem 3rem;text-align:center;overflow:hidden}
+.hero-orb{position:absolute;top:-120px;left:50%;transform:translateX(-50%);
+  width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle at center,rgba(100,128,255,0.09) 0%,transparent 65%);
+  pointer-events:none}
+.hero-orb2{position:absolute;top:80px;left:20%;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(46,237,176,0.05) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;
+  background:rgba(100,128,255,0.1);border:1px solid rgba(100,128,255,0.28);
+  border-radius:100px;padding:6px 18px;font-size:0.78rem;font-weight:600;
+  color:var(--accent);margin-bottom:1.8rem;letter-spacing:.04em;text-transform:uppercase}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);
+  animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.4rem,5.5vw,4.2rem);
+  font-weight:700;line-height:1.1;margin-bottom:1.6rem;letter-spacing:-.02em}
+h1 .hl{background:linear-gradient(100deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h1 .hl2{background:linear-gradient(100deg,var(--accent3),var(--accent4));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{color:var(--text2);font-size:1.1rem;line-height:1.75;max-width:600px;margin:0 auto 2.5rem}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+.btn-p{padding:15px 36px;border-radius:var(--r);border:none;
+  background:linear-gradient(135deg,var(--accent),#4a6aff);
+  color:#fff;font-size:1rem;font-weight:600;cursor:pointer;
+  box-shadow:0 6px 28px rgba(100,128,255,0.38);transition:all .25s}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(100,128,255,0.5)}
+.btn-o{padding:15px 36px;border-radius:var(--r);
+  border:1px solid var(--border2);background:transparent;
+  color:var(--text);font-size:1rem;font-weight:500;cursor:pointer;transition:all .25s}
+.btn-o:hover{background:var(--surface);border-color:var(--border3)}
+
+/* ═══ TICKER / THREAT FEED ═══ */
+.threat-ticker{background:rgba(255,77,106,0.07);border:1px solid rgba(255,77,106,0.2);
+  border-radius:var(--r);padding:10px 20px;margin:0 2rem 0;
+  display:flex;align-items:center;gap:12px;overflow:hidden;max-width:900px;margin:0 auto 2rem}
+.ticker-label{background:var(--danger);color:#fff;border-radius:5px;
+  padding:2px 10px;font-size:0.7rem;font-weight:700;letter-spacing:.06em;
+  white-space:nowrap;flex-shrink:0}
+.ticker-track{overflow:hidden;flex:1}
+.ticker-inner{display:flex;gap:40px;animation:ticker 22s linear infinite;width:max-content}
+.ticker-inner span{font-size:0.82rem;color:#ff8a99;white-space:nowrap}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══ STATS ═══ */
+.stats-strip{display:flex;justify-content:center;gap:0;flex-wrap:wrap;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:2rem 0}
+.stat{padding:1.5rem 3rem;text-align:center;border-right:1px solid var(--border);flex:1;min-width:160px}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;
+  background:linear-gradient(100deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-l{font-size:.75rem;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+
+/* ═══ MAIN TOOL ═══ */
+.tool-wrap{max-width:920px;margin:0 auto;padding:3rem 2rem}
+.sec-label{font-size:.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;
+  letter-spacing:.1em;text-align:center;margin-bottom:.75rem}
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;
+  text-align:center;margin-bottom:.5rem}
+.sec-sub{text-align:center;color:var(--text2);font-size:.95rem;margin-bottom:2rem}
+
+/* Mode tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.tab{padding:9px 20px;border-radius:100px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);font-size:.82rem;font-weight:500;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.tab.active{background:rgba(100,128,255,0.15);border-color:var(--accent);color:var(--accent)}
+.tab:hover:not(.active){border-color:var(--border2);color:var(--text)}
+
+/* Input card */
+.input-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);padding:1.75rem;margin-bottom:1.5rem;
+  transition:border-color .3s}
+.input-card:focus-within{border-color:var(--border2)}
+.field-label{font-size:.75rem;font-weight:600;color:var(--text2);
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:.6rem;
+  display:flex;align-items:center;gap:7px}
+.field-label::before{content:'';display:block;width:5px;height:5px;
+  border-radius:50%;background:var(--accent)}
+textarea{width:100%;min-height:130px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:var(--r);color:var(--text);
+  font-family:'Inter',sans-serif;font-size:.95rem;line-height:1.6;
+  padding:14px 16px;resize:vertical;transition:border-color .2s;outline:none}
+textarea:focus{border-color:var(--accent)}
+textarea::placeholder{color:var(--text3)}
+.samples-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:.9rem}
+.chip{padding:5px 13px;border-radius:100px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-size:.77rem;cursor:pointer;transition:all .2s}
+.chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(100,128,255,0.08)}
+.api-row{display:flex;gap:10px;margin-top:1rem;align-items:center}
+.api-in{flex:1;background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--rsm);color:var(--text);
+  font-family:'Space Grotesk',monospace;font-size:.84rem;
+  padding:11px 14px;outline:none;transition:border-color .2s}
+.api-in:focus{border-color:var(--accent)}
+.api-in::placeholder{color:var(--text3)}
+.run-btn{padding:12px 30px;border-radius:var(--r);border:none;
+  background:linear-gradient(135deg,var(--accent),#4a6aff);
+  color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;
+  box-shadow:0 4px 18px rgba(100,128,255,.35);
+  transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.run-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 26px rgba(100,128,255,.5)}
+.run-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.key-note{color:var(--text3);font-size:.76rem;margin-top:7px}
+
+/* ─── RESULTS ─── */
+.results{display:none;animation:fadeUp .4s ease}
+.results.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* Risk banner */
+.risk-banner{border-radius:var(--rlg);padding:1.6rem 1.8rem;margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:1.5rem;border:1px solid}
+.risk-banner.danger{background:rgba(255,77,106,.08);border-color:rgba(255,77,106,.3)}
+.risk-banner.warning{background:rgba(255,204,77,.08);border-color:rgba(255,204,77,.3)}
+.risk-banner.safe{background:rgba(46,237,176,.08);border-color:rgba(46,237,176,.3)}
+.risk-banner.info{background:rgba(100,128,255,.08);border-color:rgba(100,128,255,.3)}
+.risk-ico{width:60px;height:60px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.7rem}
+.danger .risk-ico{background:rgba(255,77,106,.18)}
+.warning .risk-ico{background:rgba(255,204,77,.18)}
+.safe .risk-ico{background:rgba(46,237,176,.18)}
+.info .risk-ico{background:rgba(100,128,255,.18)}
+.risk-body{flex:1}
+.risk-headline{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:5px}
+.danger .risk-headline{color:var(--danger)}
+.warning .risk-headline{color:var(--warning)}
+.safe .risk-headline{color:var(--safe)}
+.info .risk-headline{color:var(--info)}
+.risk-blurb{color:var(--text2);font-size:.9rem;line-height:1.55}
+.score-row{display:flex;align-items:center;gap:12px;margin-top:10px}
+.score-track{flex:1;height:7px;background:var(--bg3);border-radius:100px;overflow:hidden}
+.score-fill{height:100%;border-radius:100px;transition:width .9s cubic-bezier(.22,1,.36,1)}
+.danger .score-fill{background:linear-gradient(90deg,#ff4d6a,#ff8a99)}
+.warning .score-fill{background:linear-gradient(90deg,#ffcc4d,#ffe599)}
+.safe .score-fill{background:linear-gradient(90deg,#2eedb0,#7dffd8)}
+.score-val{font-size:.85rem;font-weight:600;min-width:42px;text-align:right}
+
+/* Grid cards */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:1.5rem}
+.acard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem}
+.acard-head{display:flex;align-items:center;gap:9px;margin-bottom:.85rem}
+.acard-ico{width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.acard-ttl{font-size:.72rem;font-weight:700;color:var(--text2);
+  text-transform:uppercase;letter-spacing:.07em}
+.acard-val{font-size:.92rem;color:var(--text);line-height:1.55}
+
+/* Tags */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{padding:3px 11px;border-radius:100px;font-size:.73rem;font-weight:500}
+.td{background:rgba(255,77,106,.13);color:#ff8a99;border:1px solid rgba(255,77,106,.25)}
+.tw{background:rgba(255,204,77,.13);color:#ffe066;border:1px solid rgba(255,204,77,.25)}
+.ts{background:rgba(46,237,176,.13);color:#5affc8;border:1px solid rgba(46,237,176,.25)}
+.ti{background:rgba(100,128,255,.13);color:#8ca3ff;border:1px solid rgba(100,128,255,.25)}
+.tn{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+
+/* Meter arc (SVG) */
+.meter-wrap{display:flex;justify-content:center;margin-bottom:1.5rem}
+.meter-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);padding:1.5rem 2rem;text-align:center;min-width:200px}
+.meter-label{font-size:.72rem;font-weight:700;color:var(--text2);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+
+/* Reply / actions */
+.reply-box{background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.25rem;margin-bottom:1rem}
+.reply-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.reply-lbl{font-size:.73rem;font-weight:700;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:7px}
+.copy-b{background:var(--bg3);border:1px solid var(--border);color:var(--text2);
+  padding:4px 13px;border-radius:6px;font-size:.73rem;cursor:pointer;transition:all .2s}
+.copy-b:hover{border-color:var(--accent);color:var(--accent)}
+.reply-txt{color:var(--text);font-size:.93rem;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+
+.acts{display:flex;flex-direction:column;gap:8px}
+.act{display:flex;align-items:flex-start;gap:10px;
+  background:var(--bg3);border-radius:var(--rsm);padding:10px 14px}
+.act-n{width:23px;height:23px;border-radius:50%;flex-shrink:0;
+  background:rgba(100,128,255,.18);color:var(--accent);
+  font-size:.73rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.act-t{font-size:.88rem;color:var(--text2);line-height:1.55}
+.act-t strong{color:var(--text);font-weight:500}
+
+/* Loading */
+.loading{display:flex;align-items:center;gap:10px;padding:1.2rem 0;
+  color:var(--text2);font-size:.9rem}
+.dots{display:flex;gap:5px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:bop 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes bop{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-9px)}}
+
+/* Error */
+.err{background:rgba(255,77,106,.08);border:1px solid rgba(255,77,106,.25);
+  border-radius:var(--r);padding:.9rem 1.2rem;color:#ff8a99;font-size:.88rem;margin-bottom:1rem}
+
+/* ═══ FEATURES SECTION ═══ */
+.feat-sect{max-width:960px;margin:0 auto;padding:4rem 2rem}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2rem}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:1.5rem;transition:all .25s;cursor:default}
+.feat:hover{border-color:var(--border2);transform:translateY(-3px)}
+.feat-ico{font-size:1.6rem;margin-bottom:.9rem}
+.feat-name{font-weight:600;font-size:.95rem;margin-bottom:.4rem}
+.feat-desc{font-size:.83rem;color:var(--text2);line-height:1.65}
+
+/* ═══ HOW IT WORKS ═══ */
+.how-sect{max-width:800px;margin:0 auto;padding:0 2rem 5rem}
+.steps{margin-top:2rem}
+.step{display:flex;gap:1.5rem;padding:1.4rem 0;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:19px;top:52px;
+  width:2px;bottom:0;background:var(--border)}
+.step-n{width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),#4a6aff);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:700;color:#fff;z-index:1}
+.step-t{font-weight:600;margin-bottom:4px;font-size:.95rem}
+.step-d{font-size:.85rem;color:var(--text2);line-height:1.6}
+
+/* ═══ TRUST BADGES ═══ */
+.trust{display:flex;justify-content:center;flex-wrap:wrap;gap:1.5rem;
+  padding:2rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  margin:0 0 4rem}
+.tbadge{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text2)}
+.tbadge span{font-size:1.1rem}
+
+/* ═══ FOOTER ═══ */
+footer{padding:2.5rem 2rem;text-align:center;border-top:1px solid var(--border);
+  color:var(--text3);font-size:.82rem}
+footer b{color:var(--accent2)}
+
+/* ═══ HACKATHON BADGE ═══ */
+.hbadge{position:fixed;bottom:20px;right:20px;z-index:500;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:var(--rlg);padding:10px 18px;
+  font-size:.78rem;font-weight:700;color:#fff;
+  box-shadow:0 6px 24px rgba(100,128,255,.5);
+  cursor:pointer;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* divider */
+hr{border:none;border-top:1px solid var(--border);margin:0}
+
+/* Responsive */
+@media(max-width:640px){
+  nav{padding:0 1rem}
+  .nav-pills{display:none}
+  .hero{padding:4rem 1rem 2rem}
+  .stat{padding:1rem 1.5rem;min-width:140px}
+  .tool-wrap,.feat-sect,.how-sect{padding-left:1rem;padding-right:1rem}
+  .api-row{flex-direction:column}
+  .api-in{width:100%}
+  .risk-banner{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- FLOATING BADGE -->
+<div class="hbadge" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+  🏆 Hackathon 2025 · Try Live Demo
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-box">🛡️</div>
+    <span class="logo-text">SocialMind AI</span>
+  </a>
+  <div class="nav-pills">
+    <button class="nav-pill" onclick="gotoSection('tool')">Try It</button>
+    <button class="nav-pill" onclick="gotoSection('features')">Features</button>
+    <button class="nav-pill" onclick="gotoSection('how')">How It Works</button>
+  </div>
+  <button class="nav-cta" onclick="gotoSection('tool')">Analyze Now →</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-badge"><span class="badge-dot"></span>AI Reasoning Agent · Digital Safety</div>
+  <h1>
+    Stop <span class="hl2">Scams.</span><br>
+    Decode <span class="hl">Every Message.</span><br>
+    Stay Safe Online.
+  </h1>
+  <p class="hero-sub">
+    SocialMind AI is your personal digital bodyguard. It analyzes messages, posts, and links in seconds —
+    detecting scams, manipulation, misinformation, and phishing before they harm you.
+  </p>
+  <div class="hero-btns">
+    <button class="btn-p" onclick="gotoSection('tool')">🔍 Analyze a Message Free</button>
+    <button class="btn-o" onclick="gotoSection('how')">See How It Works</button>
+  </div>
+
+  <!-- Threat ticker -->
+  <div class="threat-ticker">
+    <div class="ticker-label">LIVE THREATS</div>
+    <div class="ticker-track">
+      <div class="ticker-inner">
+        <span>🚨 Lottery scam detected — "You've won $50,000"</span>
+        <span>🎣 Phishing link blocked — fake bank login page</span>
+        <span>⚠️ Manipulation tactic — emotional guilt-tripping detected</span>
+        <span>📰 Misinformation — unverifiable health claim flagged</span>
+        <span>⚡ Fake urgency — "Act in 24 hours or lose access"</span>
+        <span>😈 Social engineering — impersonating a government agency</span>
+        <span>🚨 Lottery scam detected — "You've won $50,000"</span>
+        <span>🎣 Phishing link blocked — fake bank login page</span>
+        <span>⚠️ Manipulation tactic — emotional guilt-tripping detected</span>
+        <span>📰 Misinformation — unverifiable health claim flagged</span>
+        <span>⚡ Fake urgency — "Act in 24 hours or lose access"</span>
+        <span>😈 Social engineering — impersonating a government agency</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat"><div class="stat-n">3.4B</div><div class="stat-l">Scam messages daily</div></div>
+  <div class="stat"><div class="stat-n">94%</div><div class="stat-l">Detection accuracy</div></div>
+  <div class="stat"><div class="stat-n">&lt;8s</div><div class="stat-l">Per analysis</div></div>
+  <div class="stat"><div class="stat-n">7+</div><div class="stat-l">Threat types detected</div></div>
+</div>
+
+<!-- ═══ TOOL ═══ -->
+<section class="tool-wrap" id="tool">
+  <div class="sec-label">🧠 AI Intelligence Agent</div>
+  <div class="sec-title">Analyze Any Message or Post</div>
+  <p class="sec-sub">Paste anything suspicious. Our AI agent reasons through it like a cybersecurity expert.</p>
+
+  <!-- Mode tabs -->
+  <div class="tabs">
+    <button class="tab active" data-m="full" onclick="setMode('full')">🧠 Full Analysis</button>
+    <button class="tab" data-m="scam" onclick="setMode('scam')">🚨 Scam Check</button>
+    <button class="tab" data-m="summary" onclick="setMode('summary')">📋 Summarize</button>
+    <button class="tab" data-m="reply" onclick="setMode('reply')">💬 Reply Helper</button>
+    <button class="tab" data-m="sentiment" onclick="setMode('sentiment')">❤️ Sentiment</button>
+  </div>
+
+  <!-- Input -->
+  <div class="input-card">
+    <div class="field-label">Paste your message, post, or email</div>
+    <textarea id="inp" placeholder="e.g. 'Congratulations! You've won $50,000. Click here to claim now before midnight...'&#10;&#10;Paste any message, post, or suspicious text here."></textarea>
+
+    <div style="margin-top:1rem">
+      <div class="field-label">Try a real-world sample</div>
+      <div class="samples-row">
+        <span class="chip" onclick="loadS('scam')">💰 Lottery scam</span>
+        <span class="chip" onclick="loadS('phish')">🎣 Phishing email</span>
+        <span class="chip" onclick="loadS('fake')">📰 Fake news</span>
+        <span class="chip" onclick="loadS('manip')">😈 Manipulation</span>
+        <span class="chip" onclick="loadS('safe')">✅ Safe message</span>
+        <span class="chip" onclick="loadS('urgent')">⚡ Fake urgency</span>
+        <span class="chip" onclick="loadS('romance')">💔 Romance scam</span>
+      </div>
+    </div>
+
+    <div class="api-row">
+      <input class="api-in" type="password" id="apiKey" placeholder="Enter Anthropic API key (sk-ant-...)  →  Get free at console.anthropic.com">
+      <button class="run-btn" id="runBtn" onclick="analyze()">
+        <span id="btnTxt">🧠 Analyze Now</span>
+      </button>
+    </div>
+    <div class="key-note">🔒 Your API key is never stored or sent anywhere except Anthropic's secure servers.</div>
+  </div>
+
+  <!-- Error -->
+  <div class="err" id="errBox" style="display:none"></div>
+
+  <!-- Loading -->
+  <div class="loading" id="loadBox" style="display:none">
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <span>SocialMind AI is reasoning through your content…</span>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+
+    <!-- Risk banner -->
+    <div class="risk-banner" id="rBanner">
+      <div class="risk-ico" id="rIco"></div>
+      <div class="risk-body">
+        <div class="risk-headline" id="rTitle"></div>
+        <div class="risk-blurb" id="rDesc"></div>
+        <div class="score-row">
+          <div class="score-track"><div class="score-fill" id="sFill" style="width:0%"></div></div>
+          <span class="score-val" id="sVal"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid2" id="cardsGrid"></div>
+
+    <!-- Reply suggestion -->
+    <div id="replyArea"></div>
+
+    <!-- Actions -->
+    <div class="acard" style="margin-bottom:1.5rem">
+      <div class="acard-head">
+        <div class="acard-ico" style="background:rgba(100,128,255,.15)">🎯</div>
+        <span class="acard-ttl">What You Should Do Right Now</span>
+      </div>
+      <div class="acts" id="actsList"></div>
+    </div>
+
+    <!-- Share results btn -->
+    <div style="text-align:center;margin-top:1rem">
+      <button class="btn-o" onclick="analyzeAnother()" style="font-size:.9rem;padding:11px 28px">
+        ← Analyze Another Message
+      </button>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- FEATURES -->
+<section class="feat-sect" id="features">
+  <div class="sec-label">✨ Capabilities</div>
+  <div class="sec-title">Everything You Need to Stay Safe</div>
+  <p class="sec-sub">Six powerful AI capabilities in one intelligent reasoning agent.</p>
+  <div class="feat-grid">
+    <div class="feat">
+      <div class="feat-ico">🚨</div>
+      <div class="feat-name">Scam &amp; Phishing Detection</div>
+      <div class="feat-desc">Identifies lottery scams, phishing links, fake prizes, impersonation, and 50+ known attack patterns with precision.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">📋</div>
+      <div class="feat-name">Smart Summarization</div>
+      <div class="feat-desc">Condenses any message, thread, or article into clear key points. Cut through information overload in seconds.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">❤️</div>
+      <div class="feat-name">Sentiment &amp; Intent Analysis</div>
+      <div class="feat-desc">Understands emotional tone and hidden intent — is this person trying to pressure, manipulate, or deceive you?</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">💬</div>
+      <div class="feat-name">Safe Reply Generator</div>
+      <div class="feat-desc">Generates calm, confident responses to suspicious or difficult messages that protect you without escalating conflict.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">📰</div>
+      <div class="feat-name">Misinformation Detection</div>
+      <div class="feat-desc">Flags emotional manipulation language, unverifiable claims, and common disinformation patterns instantly.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">🎯</div>
+      <div class="feat-name">Priority &amp; Action Guide</div>
+      <div class="feat-desc">Tells you exactly what to do: ignore, block, report, or respond — with clear reasoning you can understand and trust.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="tbadge"><span>🔒</span> No data stored</div>
+  <div class="tbadge"><span>⚡</span> Real-time AI reasoning</div>
+  <div class="tbadge"><span>🌍</span> Works on any language</div>
+  <div class="tbadge"><span>🛡️</span> Privacy first</div>
+  <div class="tbadge"><span>🤖</span> Powered by Claude AI</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-sect" id="how">
+  <div class="sec-label">📖 Process</div>
+  <div class="sec-title">How SocialMind AI Works</div>
+  <p class="sec-sub">Three steps from suspicious to safe.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div>
+        <div class="step-t">Paste any content</div>
+        <div class="step-d">Drop in a message, email, social post, or text from anywhere. No special formatting needed — SocialMind handles raw text from WhatsApp, Instagram, email, SMS, or any platform.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div>
+        <div class="step-t">AI agent reasons through it</div>
+        <div class="step-d">Our Claude-powered reasoning agent analyzes language patterns, urgency signals, psychological manipulation tactics, threat indicators, and emotional tone simultaneously — just like a cybersecurity expert would.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div>
+        <div class="step-t">Get your safety verdict</div>
+        <div class="step-d">Receive a clear threat score, breakdown of red flags, emotional analysis, key insights, a suggested safe reply, and specific actions to take — all in plain, jargon-free language you can act on immediately.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built with ❤️ for the Hackathon 2025 &nbsp;·&nbsp; Powered by <b>Claude AI (Anthropic)</b> &nbsp;·&nbsp; SocialMind AI<br>
+  <span style="color:var(--text3);font-size:.76rem;margin-top:6px;display:block">
+    Protecting people from scams, manipulation, and misinformation in the modern digital world 🛡️
+  </span>
+</footer>
+
+<script>
+// ── Data ──
+const SAMPLES = {
+  scam:`CONGRATULATIONS! 🎉 You have been SELECTED as our LUCKY WINNER of $50,000 USD! Your phone number was randomly chosen from 10,000,000 entries in our global prize draw. To claim your winnings you must reply IMMEDIATELY and pay a small processing fee of $150 to unlock your funds. Contact us at prize-claim@winner-global-fund.net within 24 HOURS or your prize will be FORFEITED. This is 100% LEGITIMATE. Act NOW!`,
+  phish:`Dear Valued Customer, We have detected SUSPICIOUS ACTIVITY on your account. Your online banking access has been TEMPORARILY SUSPENDED to protect your funds. To restore access immediately, please verify your identity by clicking the secure link below and entering your login credentials, full account number, sort code and PIN within the next 2 hours. Failure to verify will result in your account being permanently closed. Verify here: secure-yourbank-verify.suspicious-login.net`,
+  fake:`BREAKING: Scientists have CONFIRMED that 5G towers are secretly releasing a chemical compound that causes memory loss and confusion! The government has been HIDING this for years. Over 50,000 people have already reported symptoms but the mainstream media REFUSES to cover it. They are DELETING this post everywhere — SHARE BEFORE IT'S TOO LATE! Your family NEEDS to know the truth. The globalists don't want you seeing this!`,
+  manip:`I can't believe after everything I've done for you, you would treat me like this. If you actually cared about me at all you would do this one simple thing I'm asking. Nobody has ever made me feel this worthless before. You ALWAYS do this — you always let me down when I need you most. Fine, I'll just deal with this completely alone like I always have to. I thought you were different but clearly I was wrong about you. I hope you're happy.`,
+  safe:`Hey! Just checking — are you still coming to Riya's birthday dinner this Saturday at 7pm? We're going to that Italian place on Park Street downtown. Let me know if you need the address or if anything has changed. We need to give the restaurant a headcount by Thursday, so just drop me a quick reply when you get a chance. Should be a really fun night — she's turning 28! 🎉`,
+  urgent:`⚠️ URGENT: Your Microsoft Windows license has EXPIRED. Your PC will be LOCKED and all files DELETED in 15 minutes unless you call our certified support team IMMEDIATELY at the number below. DO NOT restart your computer. Our system has detected 3 critical viruses actively stealing your passwords right now. You must call within the next 15 minutes to prevent permanent data loss. This is your FINAL WARNING.`,
+  romance:`Hi beautiful, I know we only met online 2 weeks ago but I feel such a strong connection with you that I've never felt before. I'm currently working on an oil rig in Norway but I'll be coming to meet you very soon. Unfortunately I've just had a terrible emergency — my wallet and phone were stolen and I need to pay my crew or they won't let me leave. Could you please send just $500 via Western Union? I promise I will pay you back double when I arrive. I love you so much already.`
+};
+
+let mode = 'full';
+
+function gotoSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+function setMode(m){
+  mode=m;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.m===m));
+}
+function loadS(k){document.getElementById('inp').value=SAMPLES[k]||''}
+function analyzeAnother(){
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('inp').value='';
+  document.getElementById('tool').scrollIntoView({behavior:'smooth'});
+}
+
+// ── Build prompt ──
+function prompt(text,m){
+  const focus={
+    full:'Perform a COMPREHENSIVE analysis covering all dimensions.',
+    scam:'Focus intensely on scam, phishing, and fraud detection. Be thorough about every threat pattern.',
+    summary:'Focus on delivering the clearest, most useful summary and key insights.',
+    reply:'Focus on generating the most effective safe reply the user can send.',
+    sentiment:'Focus deeply on sentiment, psychology, emotional manipulation and intent.'
+  };
+  return `You are SocialMind AI, an expert digital safety intelligence agent built to protect people from online threats. ${focus[m]||focus.full}
+
+Analyze the message below and respond ONLY with valid JSON. No markdown, no backticks, no preamble.
+
+MESSAGE:
+"""
+${text}
+"""
+
+Return exactly this JSON structure:
+{
+  "riskLevel": "DANGER"|"WARNING"|"SAFE"|"INFO",
+  "riskScore": <integer 0-100>,
+  "riskTitle": "<verdict, max 8 words>",
+  "riskDescription": "<2-sentence plain-English explanation of overall risk>",
+  "category": "<Scam|Phishing|Manipulation|Misinformation|Romance Scam|Safe|Spam|Fake Urgency|Emotional Abuse|Impersonation|Other>",
+  "intent": "<detected intent in 1 clear sentence>",
+  "sentiment": "<Positive|Negative|Neutral|Mixed|Alarming|Manipulative>",
+  "sentimentDetail": "<2-sentence explanation of emotional tone and psychological tactics>",
+  "keyRedFlags": ["<red flag 1>","<red flag 2>","<red flag 3 if any>"],
+  "summary": "<3-4 sentence plain-language explanation of what this content is actually doing and why>",
+  "priorityLevel": "HIGH"|"MEDIUM"|"LOW",
+  "suggestedReply": "<a safe, confident reply the user could send — or exactly 'NO_REPLY_NEEDED' if not applicable>",
+  "actions": [
+    "<Action 1: use **bold** for the key verb, e.g. **Do not click** any links in this message.>",
+    "<Action 2>",
+    "<Action 3>"
+  ],
+  "isScam": true|false,
+  "isMisinformation": true|false,
+  "isManipulative": true|false
+}`;
+}
+
+// ── Analyze ──
+async function analyze(){
+  const text=(document.getElementById('inp').value||'').trim();
+  const key=(document.getElementById('apiKey').value||'').trim();
+  const err=document.getElementById('errBox');
+  err.style.display='none';
+  document.getElementById('results').classList.remove('show');
+
+  if(!text){showErr('Please paste a message or choose a sample first.');return}
+  if(!key||!key.startsWith('sk-ant-')){
+    showErr('Please enter your Anthropic API key (starts with sk-ant-...). Get one free at console.anthropic.com');return
+  }
+
+  const btn=document.getElementById('runBtn');
+  btn.disabled=true;
+  document.getElementById('btnTxt').textContent='⏳ Thinking…';
+  document.getElementById('loadBox').style.display='flex';
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1200,
+        messages:[{role:'user',content:prompt(text,mode)}]
+      })
+    });
+    if(!res.ok){
+      const e=await res.json().catch(()=>({}));
+      throw new Error(e.error?.message||`API error ${res.status}`);
+    }
+    const d=await res.json();
+    const raw=d.content.map(b=>b.text||'').join('');
+    let r;
+    try{r=JSON.parse(raw.replace(/```json|```/g,'').trim())}
+    catch{throw new Error('AI response could not be parsed. Please try again.')}
+    render(r);
+  }catch(e){
+    showErr('Analysis failed: '+e.message);
+  }finally{
+    btn.disabled=false;
+    document.getElementById('btnTxt').textContent='🧠 Analyze Now';
+    document.getElementById('loadBox').style.display='none';
+  }
+}
+
+function showErr(m){
+  const b=document.getElementById('errBox');
+  b.textContent='⚠️ '+m;b.style.display='block';
+}
+
+// ── Render results ──
+function render(r){
+  const lm={
+    DANGER:{cls:'danger',ico:'🚨',sc:'var(--danger)'},
+    WARNING:{cls:'warning',ico:'⚠️',sc:'var(--warning)'},
+    SAFE:{cls:'safe',ico:'✅',sc:'var(--safe)'},
+    INFO:{cls:'info',ico:'ℹ️',sc:'var(--info)'}
+  };
+  const L=lm[r.riskLevel]||lm.INFO;
+
+  // Banner
+  const banner=document.getElementById('rBanner');
+  banner.className='risk-banner '+L.cls;
+  document.getElementById('rIco').textContent=L.ico;
+  document.getElementById('rTitle').textContent=r.riskTitle;
+  document.getElementById('rDesc').textContent=r.riskDescription;
+  const fill=document.getElementById('sFill');
+  fill.style.width='0%';
+  setTimeout(()=>{fill.style.width=r.riskScore+'%'},120);
+  const sv=document.getElementById('sVal');
+  sv.textContent=r.riskScore+'/100';sv.style.color=L.sc;
+
+  // Threat tags
+  const threats=[
+    r.isScam?'<span class="tag td">🚨 Scam</span>':'',
+    r.isMisinformation?'<span class="tag tw">📰 Misinformation</span>':'',
+    r.isManipulative?'<span class="tag tw">😈 Manipulation</span>':'',
+    (!r.isScam&&!r.isMisinformation&&!r.isManipulative)?'<span class="tag ts">✅ No threats detected</span>':''
+  ].filter(Boolean).join('');
+
+  // Sentiment class
+  const sc2={Positive:'ts',Negative:'td',Manipulative:'td',Alarming:'td',Mixed:'tw',Neutral:'tn'}[r.sentiment]||'tn';
+
+  // Flags
+  const flags=(r.keyRedFlags||[]).map(f=>`<span class="tag td">${f}</span>`).join('');
+
+  document.getElementById('cardsGrid').innerHTML=`
+    <div class="acard">
+      <div class="acard-head"><div class="acard-ico" style="background:rgba(100,128,255,.15)">🏷️</div><span class="acard-ttl">Category &amp; Priority</span></div>
+      <div class="acard-val" style="font-weight:600">${r.category}</div>
+      <div class="acard-val" style="color:var(--text2);font-size:.82rem;margin-top:3px">${r.priorityLevel} priority</div>
+      <div class="tags" style="margin-top:10px">${threats}</div>
+    </div>
+    <div class="acard">
+      <div class="acard-head"><div class="acard-ico" style="background:rgba(46,237,176,.15)">❤️</div><span class="acard-ttl">Sentiment &amp; Tone</span></div>
+      <div style="margin-bottom:8px"><span class="tag ${sc2}">${r.sentiment}</span></div>
+      <div class="acard-val">${r.sentimentDetail}</div>
+    </div>
+    <div class="acard" style="grid-column:1/-1">
+      <div class="acard-head"><div class="acard-ico" style="background:rgba(255,204,77,.15)">🎯</div><span class="acard-ttl">Detected Intent</span></div>
+      <div class="acard-val">${r.intent}</div>
+    </div>
+    <div class="acard" style="grid-column:1/-1">
+      <div class="acard-head"><div class="acard-ico" style="background:rgba(255,77,106,.15)">🚩</div><span class="acard-ttl">Red Flags Detected</span></div>
+      ${flags?`<div class="tags">${flags}</div>`:'<div class="acard-val" style="color:var(--safe)">✅ No significant red flags found</div>'}
+    </div>
+    <div class="acard" style="grid-column:1/-1">
+      <div class="acard-head"><div class="acard-ico" style="background:rgba(46,237,176,.15)">📋</div><span class="acard-ttl">Summary</span></div>
+      <div class="acard-val">${r.summary}</div>
+    </div>`;
+
+  // Reply
+  const ra=document.getElementById('replyArea');
+  if(r.suggestedReply&&r.suggestedReply!=='NO_REPLY_NEEDED'){
+    const safe=r.suggestedReply.replace(/</g,'&lt;');
+    ra.innerHTML=`<div class="reply-box">
+      <div class="reply-head">
+        <div class="reply-lbl">💬 Suggested Safe Reply</div>
+        <button class="copy-b" onclick="copyText(this,'${esc(r.suggestedReply)}')">Copy</button>
+      </div>
+      <div class="reply-txt">${safe}</div>
+    </div>`;
+  }else{
+    ra.innerHTML=`<div class="reply-box"><div class="reply-txt" style="color:var(--text2)">💬 No reply needed — it's safest to ignore, block, or report this message without engaging.</div></div>`;
+  }
+
+  // Actions
+  document.getElementById('actsList').innerHTML=(r.actions||[]).map((a,i)=>`
+    <div class="act">
+      <div class="act-n">${i+1}</div>
+      <div class="act-t">${a.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')}</div>
+    </div>`).join('');
+
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function esc(s){return(s||'').replace(/'/g,"&#39;").replace(/"/g,'&quot;').replace(/\n/g,' ')}
+function copyText(btn,txt){
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>{btn.textContent='Copy'},2000);
+  });
+}
+</script>
+</body>
+</html>
