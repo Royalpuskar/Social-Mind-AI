@@ -82,7 +82,7 @@ def analyze_url(raw_url: str) -> Analysis:
         add("long_host", "Hostname is unusually long", 10)
     if host.count(".") >= 4:
         add("many_subdomains", "Hostname has an unusually large number of subdomains", 10)
-    if re.search(r"\\d{4,}", host):
+    if re.search(r"\d{4,}", host):
         add("long_digit_run", "Hostname contains a long run of digits", 10)
 
     decoded_path = unquote(parsed.path).lower()
