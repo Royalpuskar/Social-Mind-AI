@@ -1,0 +1,37 @@
+name: Verify SocialMind
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Message analysis contract tests
+        run: python -m unittest discover -s tests -v
+      - name: URL triage contract tests
+        run: PYTHONPATH=projects/traceguard python -m unittest discover -s projects/traceguard/tests -v
+      - name: Syntax check browser analyzer
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path("index.html").read_text(encoding="utf-8")
+          scripts=re.findall(r"<script(?:\\s[^>]*)?>(.*?)</script>", html, flags=re.S|re.I)
+          assert scripts, "Expected inline browser script"
+          Path("/tmp/socialmind-browser.js").write_text("\n".join(scripts))
+          assert 'id="key"' not in html, "Do not request third-party keys in the browser"
+          assert "api.anthropic.com" not in html, "External provider requests are not supported in the static prototype"
+          PY
+          node --check /tmp/socialmind-browser.js
