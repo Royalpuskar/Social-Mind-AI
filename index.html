@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SocialMind AI — Enterprise Digital Safety Intelligence Agent</title>
+<title>SocialMind AI — Digital Safety Research Prototype</title>
 
 <style>
   :root {
@@ -592,10 +592,10 @@
 </nav>
 
 <div class="hero">
-  <div class="hero-tag">🟢 Enterprise AI-Powered Digital Safety Agent <span class="badge-ai">AGENTS LEAGUE</span></div>
+  <div class="hero-tag">🟢 Explainable digital safety lab <span class="badge-ai">LOCAL PROTOTYPE</span></div>
   <h1>Stop Scams.<br><em>Understand Everything.</em><br>Stay Safe Online.</h1>
   <p class="hero-sub">
-    SocialMind AI analyzes any message, post, or link in seconds — detecting scams, misinformation, manipulation, and threats with 94% accuracy before they hurt you. Trusted by 10M+ users globally.
+    Explore transparent text indicators of social engineering. This demonstration does not certify safety or measure factual accuracy.
   </p>
   <div class="hero-buttons">
     <button class="btn-primary" onclick="document.getElementById('analyze').scrollIntoView({behavior:'smooth'})">🔍 Analyze a Message</button>
@@ -605,26 +605,26 @@
 
 <div class="section stats-grid">
   <div class="stat-card">
-    <div class="stat-number">3.4B</div>
-    <div class="stat-label">Scam messages stopped</div>
+    <div class="stat-number">6</div>
+    <div class="stat-label">Text indicator rules</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">94%</div>
-    <div class="stat-label">Detection accuracy</div>
+    <div class="stat-number">0</div>
+    <div class="stat-label">Keys required</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">8s</div>
-    <div class="stat-label">Average analysis</div>
+    <div class="stat-number">Local</div>
+    <div class="stat-label">Evaluation mode</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">50+</div>
-    <div class="stat-label">AI features</div>
+    <div class="stat-number">2</div>
+    <div class="stat-label">Python analyzers</div>
   </div>
 </div>
 
 <div class="section" id="analyze">
   <h2>🔍 Analyze Any Message or Post</h2>
-  <p style="color: var(--text2); margin-bottom: 1.5rem;">Paste text, email, social post, or link. Get instant AI-powered analysis.</p>
+  <p style="color: var(--text2); margin-bottom: 1.5rem;">Paste text, email, social post, or link. Get transparent local rule-based findings.</p>
 
   <div class="features-pills">
     <div class="feature-pill">💬 Full Analysis</div>
@@ -648,7 +648,7 @@
       <button class="sample-btn" onclick="loadSample('⚡ Urgency: Account deleted in 24 hours unless verified now!')">⚡ Urgency</button>
     </div>
 
-    <input type="password" id="key" placeholder="Paste your Anthropic API key (sk-ant-...)">
+    <p class="security-note">Local demo: no API key needed or collected. Content is processed in your browser.</p>
 
     <div class="analyze-footer">
       <button class="btn-primary" onclick="run()">🧠 Analyze Now</button>
@@ -666,7 +666,7 @@
     <div class="feature-card">
       <div class="feature-icon">🚨</div>
       <div class="feature-title">Scam Detection</div>
-      <div class="feature-desc">50+ attack patterns: lottery, prize, investment, romance, job, tech support scams.</div>
+      <div class="feature-desc">Indicators for requests for credentials, urgency, prize bait, links, and impersonation.</div>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🎣</div>
@@ -726,8 +726,8 @@
   </div>
 </div>
 
-<div class="section" id="capabilities">
-  <h2>🚀 50+ Advanced Capabilities <span class="badge-ai">EXCLUSIVE</span></h2>
+<div class="section" id="capabilities"><p class="security-note">ROADMAP: The capabilities below are future concepts, not shipped integrations.</p>
+  <h2>🚀 Research Roadmap <span class="badge-ai">IDEAS, NOT LIVE FEATURES</span></h2>
  
   <div class="tabs">
     <button class="tab active" onclick="switchTab(event, 'nlp')">NLP & AI</button>
@@ -738,7 +738,7 @@
 
   <div id="nlp" class="tab-content active">
     <div class="capability-grid">
-      <div class="capability-item"><strong>Multi-Language</strong> Support for 50+ languages</div>
+      <div class="capability-item"><strong>Multi-Language</strong> Current heuristics are English-focused</div>
       <div class="capability-item"><strong>Context Aware</strong> Understands intent & nuance</div>
       <div class="capability-item"><strong>Semantic Search</strong> Finds similar threats</div>
       <div class="capability-item"><strong>Named Entity</strong> Recognition for targets</div>
@@ -795,7 +795,7 @@
       <div class="capability-item"><strong>Audit Logs</strong> Complete activity tracking</div>
       <div class="capability-item"><strong>SSO Integration</strong> SAML/OAuth support</div>
       <div class="capability-item"><strong>White Labeling</strong> Brand customization</div>
-      <div class="capability-item"><strong>SLA Guarantee</strong> 99.99% uptime</div>
+      <div class="capability-item"><strong>SLA Guarantee</strong> not measured uptime</div>
       <div class="capability-item"><strong>Dedicated Support</strong> 24/7 assistance</div>
       <div class="capability-item"><strong>Training Programs</strong> Employee education</div>
       <div class="capability-item"><strong>Custom Reports</strong> Executive dashboards</div>
@@ -829,16 +829,16 @@
       <div class="capability-item"><strong>LLM Reasoning</strong> Multi-step analysis</div>
     </div>
 
-    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1.1rem;">Performance Metrics</h3>
+    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1.1rem;">Prototype boundaries</h3>
     <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
       <div class="metric-badge">⚡ 8s Response Time</div>
-      <div class="metric-badge">🎯 94% Accuracy</div>
-      <div class="metric-badge">📈 99.99% Uptime</div>
-      <div class="metric-badge">🚀 10M+ Users</div>
-      <div class="metric-badge">🌍 150+ Countries</div>
+      <div class="metric-badge">🎯 not measured Accuracy</div>
+      <div class="metric-badge">📈 not measured Uptime</div>
+      <div class="metric-badge">🚀 not measured Users</div>
+      <div class="metric-badge">🌍 not measured Countries</div>
       <div class="metric-badge">🔒 Military-Grade Encryption</div>
       <div class="metric-badge">⚙️ Real-Time Processing</div>
-      <div class="metric-badge">📊 1B+ Messages Analyzed</div>
+      <div class="metric-badge">📊 not measured Messages Analyzed</div>
     </div>
   </div>
 </div>
@@ -878,66 +878,7 @@ Queries:
   </div>
 </div>
 
-<div class="section">
-  <h2>📊 Feature Comparison</h2>
-  <table class="comparison-table">
-    <tr>
-      <th>Capability</th>
-      <th>SocialMind AI</th>
-      <th>Traditional Tools</th>
-      <th>Other AI Tools</th>
-    </tr>
-    <tr>
-      <td><strong>Real-Time Analysis</strong></td>
-      <td>✅ 8s</td>
-      <td>❌ 5 min</td>
-      <td>⚠️ 1-2 min</td>
-    </tr>
-    <tr>
-      <td><strong>Threat Categories</strong></td>
-      <td>✅ 50+</td>
-      <td>❌ 2-3</td>
-      <td>⚠️ 5-10</td>
-    </tr>
-    <tr>
-      <td><strong>Languages Supported</strong></td>
-      <td>✅ 50+</td>
-      <td>❌ 5</td>
-      <td>⚠️ 20</td>
-    </tr>
-    <tr>
-      <td><strong>ML Models</strong></td>
-      <td>✅ 6+</td>
-      <td>❌ 0</td>
-      <td>⚠️ 1-2</td>
-    </tr>
-    <tr>
-      <td><strong>Deepfake Detection</strong></td>
-      <td>✅ Yes</td>
-      <td>❌ No</td>
-      <td>❌ No</td>
-    </tr>
-    <tr>
-      <td><strong>Cross-Platform</strong></td>
-      <td>✅ 5+</td>
-      <td>❌ 1</td>
-      <td>⚠️ 2</td>
-    </tr>
-    <tr>
-      <td><strong>Enterprise APIs</strong></td>
-      <td>✅ REST/GraphQL</td>
-      <td>❌ None</td>
-      <td>⚠️ REST Only</td>
-    </tr>
-    <tr>
-      <td><strong>Browser Extension</strong></td>
-      <td>✅ Chrome/Firefox</td>
-      <td>❌ Limited</td>
-      <td>⚠️ Chrome Only</td>
-    </tr>
-  </table>
-</div>
-
+<div class="section"><h2>Current implementation scope</h2><p style="color:var(--text2)">The browser demonstrates six deterministic text indicators and a static SQL example. The repository also includes tested Python message and URL triage analyzers. Production APIs, deepfake detection, enterprise integrations, and performance benchmarks are not implemented.</p></div>
 <div class="section" id="how-it-works">
   <h2>How SocialMind AI Works</h2>
   <p style="color: var(--text2); margin-bottom: 2rem;">Three steps from paste to protected.</p>
@@ -947,14 +888,14 @@ Queries:
       <div class="step-number">1</div>
       <div class="step-content">
         <h3>Paste any content</h3>
-        <p>Drop in a message, email, social post, or suspicious link. SocialMind handles raw text from anywhere in 50+ languages.</p>
+        <p>Drop in a message, email, social post, or suspicious link. SocialMind handles raw text from anywhere in English-focused input.</p>
       </div>
     </div>
     <div class="step-item">
       <div class="step-number">2</div>
       <div class="step-content">
-        <h3>AI agent reasons through it</h3>
-        <p>Our multi-model AI analyzes: language patterns, urgency signals, threat indicators, sentiment, entity recognition, and behavioral anomalies simultaneously.</p>
+        <h3>Transparent rules evaluate wording</h3>
+        <p>Six explainable patterns highlight social-engineering wording without external API requests.</p>
       </div>
     </div>
     <div class="step-item">
@@ -970,8 +911,8 @@ Queries:
 <footer>
   SocialMind AI · GitHub Intelligence System · RoyalPuskar<br>
   <span style="font-size:0.75rem;color:var(--text3)">
-    🏆 Agents League Hackathon 2026 · Multi-Agent Reasoning AI · Trusted by 10M+ Users<br>
-    Detecting scams, manipulation, misinformation, and threats in real time across 150+ countries.
+    Research prototype · Open-source experiments<br>
+    Demonstrating transparent local warning signals without a published benchmark.
   </span>
 </footer>
 
@@ -1014,52 +955,26 @@ function loadMaskSample(){
   }
 }
 
-async function run(){
-  const text=document.getElementById("text").value;
-  const key=document.getElementById("key").value;
-  const out=document.getElementById("out");
-
-  if(!text) return out.innerHTML="⚠️ Enter text";
-  if(!key.startsWith("sk-ant-")) return out.innerHTML="⚠️ Invalid API key";
-
-  out.innerHTML="🔄 Analyzing with 6+ AI models...";
-  out.style.display="block";
-
-  const prompt=`
-Return JSON only:
-{
-"risk":"SAFE|WARNING|DANGER",
-"score":0-100,
-"summary":"short explanation",
-"threats":"array of threat types",
-"confidence":0-100,
-"recommendation":"action to take",
-"languages":["detected languages"],
-"entities":["people/orgs mentioned"]
-}
-
-Text:
-${text}
-`;
-
-  try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "x-api-key":key,
-        "anthropic-version":"2023-06-01"
-      },
-      body:JSON.stringify({
-        model:"claude-sonnet-4-20250514",
-        max_tokens:500,
-        // truncated in-file placeholder
-      })
-    });
-    // The original demo includes an AI call -- leaving behavior as-is.
-  }catch(e){
-    out.innerHTML="⚠️ Analysis failed";
-  }
+function run(){
+ const input=document.getElementById("text").value,out=document.getElementById("out");
+ out.replaceChildren();out.style.display="block";
+ const add=(tag,msg)=>{const node=document.createElement(tag);node.textContent=msg;out.append(node)};
+ if(!input.trim()){add("p","Enter text to inspect.");return}
+ if(input.length>12000){add("p","Use fewer than 12,000 characters.");return}
+ const rules=[
+  ["credential request",/\b(password|passcode|one[- ]time code|otp|verification code|pin)\b/i,28],
+  ["urgent pressure",/\b(urgent|immediately|within \d+ minutes|act now|account will be (?:closed|suspended))\b/i,18],
+  ["payment or prize bait",/\b(claim your prize|you have won|processing fee|send (?:the )?payment|gift card)\b/i,22],
+  ["link present",/(?:https?:\/\/|www\.)[^\s]+/i,8],
+  ["secrecy pressure",/\b(do not tell anyone|keep this secret|don't contact your bank)\b/i,18],
+  ["impersonation wording",/\b(CEO| IT support|bank security|government officer)\b/i,8]
+ ];
+ const found=rules.filter(rule=>rule[1].test(input)),score=Math.min(100,found.reduce((sum,rule)=>sum+rule[2],0));
+ const severity=score>=60?"HIGH":score>=25?"MEDIUM":"LOW";
+ add("h3",severity+" indicator score · "+score+"/100");
+ add("p",found.length?"Matched signals: "+found.map(r=>r[0]).join(", "):"No matching demo rules found.");
+ add("p",score>=60?"Do not share codes or money. Verify independently through an official contact.":score>=25?"Pause and verify the sender through another channel.":"No strong pattern detected; unknown threats may still be present.");
+ add("p","Local rule-based triage only: no AI fact-checking, URL opening, malware scanning, or verified detection accuracy.");
 }
 
 function showCompiled(){
