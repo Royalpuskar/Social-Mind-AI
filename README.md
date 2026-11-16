@@ -1,5 +1,13 @@
 # SocialMind AI — Digital Safety Research Lab
 
+<!-- portfolio-website:start -->
+## Website
+
+[Open Social-Mind-AI website](https://royalpuskar.github.io/Social-Mind-AI/)
+
+Intended GitHub Pages address; deployment has not been verified. If it does not load, GitHub Pages must be enabled for the root of the main branch.
+<!-- portfolio-website:end -->
+
 **A transparent, locally runnable social-engineering awareness prototype.** This repository explores rule-based scam-message triage, URL structure checks and safe handling of untrusted text.
 
 **Status:** Working educational prototype, **not** an enterprise security product. No verified accuracy, user count, uptime SLA, or broad multi-model deployment is claimed.
@@ -51,3 +59,10 @@ GitHub Actions verifies both Python suites and JavaScript syntax for the browser
 Expand and test with a documented, consented, representative dataset; publish false-positive/false-negative analysis, multilingual limitations, adversarial examples, reproducibility notebooks, and calibrated thresholds before claiming detection effectiveness.
 
 Author: [Royalpuskar](https://github.com/Royalpuskar).
+
+
+<!-- portfolio-rights:start -->
+## Copyright
+
+© 2026 Puskar (Royalpuskar). All rights reserved for original project content, except where an applicable license grants permission. Third-party rights and notices remain with their owners.
+<!-- portfolio-rights:end -->
