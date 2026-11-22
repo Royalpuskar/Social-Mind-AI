@@ -967,7 +967,7 @@ function run(){
   ["payment or prize bait",/\b(claim your prize|you have won|processing fee|send (?:the )?payment|gift card)\b/i,22],
   ["link present",/(?:https?:\/\/|www\.)[^\s]+/i,8],
   ["secrecy pressure",/\b(do not tell anyone|keep this secret|don't contact your bank)\b/i,18],
-  ["impersonation wording",/\b(CEO| IT support|bank security|government officer)\b/i,8]
+  ["impersonation wording",/\b(CEO|IT support|bank security|government officer)\b/i,8]
  ];
  const found=rules.filter(rule=>rule[1].test(input)),score=Math.min(100,found.reduce((sum,rule)=>sum+rule[2],0));
  const severity=score>=60?"HIGH":score>=25?"MEDIUM":"LOW";
