@@ -30,7 +30,7 @@ _PATTERNS: tuple[tuple[str, re.Pattern[str], int], ...] = (
     ("payment_or_prize_bait", re.compile(r"\b(claim your prize|you have won|processing fee|send (?:the )?payment|gift card)\b", re.I), 22),
     ("suspicious_link", re.compile(r"(?:https?://|www\.)[^\s]+", re.I), 8),
     ("secrecy_or_isolation", re.compile(r"\b(do not tell anyone|keep this secret|don't contact your bank)\b", re.I), 18),
-    ("impersonation_language", re.compile(r"\b(CEO| IT support|bank security|government officer)\b", re.I), 8),
+    ("impersonation_language", re.compile(r"\b(CEO|IT support|bank security|government officer)\b", re.I), 8),
 )
 
 def analyze_message(message: str) -> AnalysisResult:

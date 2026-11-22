@@ -28,6 +28,16 @@ class AnalyzerTests(unittest.TestCase):
         result = analyze_message("Hello")
         self.assertIsInstance(result.to_dict()["indicators"], list)
 
+    def test_it_support_impersonation_at_word_boundaries(self):
+        for message in ("IT support", "Contact IT support", "Our IT SUPPORT team"):
+            with self.subTest(message=message):
+                result = analyze_message(message)
+                self.assertIn("impersonation_language", result.indicators)
+                self.assertEqual(result.risk_score, 8)
+        for message in ("unit support", "IT supporter", "split support"):
+            with self.subTest(message=message):
+                self.assertNotIn("impersonation_language", analyze_message(message).indicators)
+
     def test_redaction(self):
         value = redact_sensitive_data("Email me at test@example.com or call +1 202 555 0147")
         self.assertNotIn("test@example.com", value)
